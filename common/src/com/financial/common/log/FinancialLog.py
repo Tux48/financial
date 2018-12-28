@@ -7,11 +7,8 @@ com.financial.common.log.FinancialLog -- 日志工具类
 
 com.financial.common.log.FinancialLog is a 日志工具类，实例化日志目录、文件。添加日志内容。
 
-It defines classes_and_methods:   def addInfoLog( self, message ): 添加info级别日志内容
-                                                    def addDebugLog( self, message ): 添加debug级别日志内容
-                                                    def addWaringLog( self, message ): 添加waring级别日志内容
-                                                    def addErrorLog( self, message ): 添加error级别日志内容
-                                                    def addCriticalLog( self, message ): 添加critical级别日志内容
+It defines classes_and_methods:   
+def getLogger( self ):    返回日志实例
 
 @author: Administrator
 
@@ -24,79 +21,52 @@ It defines classes_and_methods:   def addInfoLog( self, message ): 添加info级
 
 import os
 import logging
+from logging.handlers import TimedRotatingFileHandler
+
+from com.financial.common.cfg.FilePathConfig import FilePathConfig
 
 class FinancialLog:
     
     ## 日志内容格式 时间-日志等级-模块名-方法名-行号-信息
-    LOGGING_MSG_FORMAT  = '[%(asctime)s] [%(levelname)s] [%(module)s] [%(funcName)s] [%(lineno)d] %(message)s'
+    LOGGING_MSG_FORMAT  = '[%(asctime)s] [%(levelname)s] [%(pathname)s] [%(filename)s] [%(lineno)d] %(message)s'
     
     ## 日志时间格式
     LOGGING_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
     
-    ## 日志对像
-    log = None
+    ## 默认日志文件路径
+    logPath =FilePathConfig().getConfigInfo().get( "log_path" )
     
-    def __init__( self, logFilePath, logFileName ):
-        
-        logging.basicConfig( level = logging.DEBUG, format = self.LOGGING_MSG_FORMAT, datefmt=self.LOGGING_DATE_FORMAT )
-        log = logging.getLogger( 'simple_example'  )
+    ## 默认日志文件名
+    logFile =FilePathConfig().getConfigInfo().get( "log_file" )
+    
+    def __init__( self, logFilePath = logPath, logFileName = logFile ):
         
         ## 如果目录不存在，创建设目录
         if not os.path.exists( logFilePath ):
             os.makedirs( logFilePath )
         
+        logFile = os.path.join( logFilePath, logFileName )
+        
         '''
         设置日志文件内容格式
         '''
-        logFile = os.path.join( logFilePath, logFileName )
-        logger = logging.handlers.TimedRotatingFileHandler( logFile, 'midnight', 1 )    ## 每天凌晨生成一个新日志文件
-        logger.setFormatter( logging.Formatter( self.LOGGING_MSG_FORMAT ) )
-        log.addHandler( logger )
-        
+        logging.basicConfig( level = logging.DEBUG, format = self.LOGGING_MSG_FORMAT, datefmt=self.LOGGING_DATE_FORMAT )
+        self.__log = logging.getLogger()
+        handler = TimedRotatingFileHandler( logFile, "midnight", 1, encoding = "UTF-8" )    ## 每天凌晨生成一个新日志文件
+        formatter = logging.Formatter(self.LOGGING_MSG_FORMAT )
+        handler.setFormatter( formatter )
+        self.__log.addHandler( handler )
+
         '''
         设轩控制台输出格式
         '''
         console = logging.StreamHandler()
         console.setLevel( logging.INFO )
         console.setFormatter( logging.Formatter( self.LOGGING_MSG_FORMAT ) )
-        log.addHandler( console )
+        self.__log.addHandler( console )
         
     '''
-    @summary: 添加info级别日志内容
-    
-    @param message: 日志内容 
+    @summary: 返回日志实例
     '''
-    def addInfoLog( self, message ):
-        self.log.info( message )
-        
-    ''''
-    @summary: 添加debug级别日志内容
-    
-    @param message: 日志内容 
-    '''
-    def addDebugLog( self, message ):
-        self.log.debug( message )
-        
-    '''
-    @summary: 添加waring级别日志内容
-    
-    @param message: 日志内容 
-    '''
-    def addWaringLog( self, message ):
-        self.log.waring( message )
-        
-    '''
-    @summary: 添加error级别日志内容
-    
-    @param message: 日志内容 
-    '''
-    def addErrorLog( self, message ):
-        self.log.error( message )
-        
-    '''
-    @summary: 添加critical级别日志内容
-    
-    @param message: 日志内容 
-    '''
-    def addCriticalLog( self, message ):
-        self.log.critical( message )
+    def getLogger( self ):
+        return self.__log

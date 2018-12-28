@@ -1,13 +1,11 @@
 #!/usr/local/bin/python3.7
 #-*- coding: utf-8 -*-
 '''
-Created on 2018��12��25��
+Created on 2018-12-25
 
-com.financial.common.db.MySqlConfig -- shortdesc
+com.financial.common.db.MySqlConfig -- Mysql数据库配置信息获取工具类
 
-com.financial.common.db.MySqlConfig is a description
-
-It defines classes_and_methods
+com.financial.common.db.MySqlConfig is a Mysql数据库配置信息获取工具类
 
 @author: Administrator
 
@@ -18,8 +16,12 @@ It defines classes_and_methods
 @deffield    updated: Updated
 '''
 from com.financial.common.cfg.BaseConfig import BaseConfig
+from com.financial.common.cfg.FilePathConfig import FilePathConfig
 
 class MySqlConfig( BaseConfig ):
     
-    ## test
-    s = ""
+    ## 配置文件所有位置，放到Linux机器上需要改路径
+    configFilePath = FilePathConfig().getConfigInfo().get( "mysql_config_path" )
+    
+    def __init__(self):
+        super( MySqlConfig, self ).__init__( self.configFilePath )

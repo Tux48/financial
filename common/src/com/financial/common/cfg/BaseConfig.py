@@ -3,11 +3,19 @@
 '''
 Created on 2018年12月24日
 
-com.financial.common.cfg.BaseConfig -- shortdesc
+com.financial.common.cfg.BaseConfig -- 读取配轩文件基类
 
-com.financial.common.cfg.BaseConfig is a description
+com.financial.common.cfg.BaseConfig is a 
+读取配轩文件基类，读取配文件，并将配置信息加载到内存中。
+加载配置信息时，通过文件最后修改时间判断配置文件是否被
+修改过，如果被修改，则重新加载。
 
 It defines classes_and_methods
+
+def __needReload( self ):                         判断是否需要重新加载
+def __readConfigFile( self ):                     读取配置文件
+def __addConfigInfo( self, key, value ):    将配置信息以key-value的方式放到字典中
+def getConfigInfo( self ):                        供外部调用，返回配置信息
 
 @author: WeiFengQing
 
@@ -23,30 +31,19 @@ from configparser import ConfigParser
 
 class BaseConfig:
     
-    ## 存放配置的key-value字典
-    __configInfoDictionary = dict()
-
-    ## 配置文件名
-    __fileName = "";
-    
-    ## 配置文件绝对路径
-    __fileAbsolutePath = ""
-    
-    ## 配置文件的最后修改时间
-    __lastModifyTime = 0;
-    
     '''
     @summary: 初始化方法，读取配轩文件件，并获取配置信息
     
     @param fileName: 配置文件名
     '''
     def __init__( self, fileName ):
-        self.__fileName = fileName
+        self.__configInfoDictionary = dict()    ## 存放配置的key-value字典
+        self.__fileAbsolutePath = ""    ## 配置文件绝对路径
+        self.__lastModifyTime = 0   ## 配置文件的最后修改时间
+        self. __fileName = ""   ## 配置文件名
         
-        if not os.path.exists( fileName ):
-            s = ''  ## 抛出文件不存在异常
-            
-        self.__readConfigFile( fileName )
+        self.__fileName = fileName
+        self.__readConfigFile()
     
     '''
     @summary: 获取配置文件的最后修改时间，并判断上一次记录的修改时间是否与最后修改时间相同。
@@ -56,8 +53,8 @@ class BaseConfig:
                          
     @return: 如果文件最后修改时间与记录最后修改时间相同返回true，否则返回false。
     '''
-    def __needReload( self, fileName ):
-        modifyTime = os.path.getmtime( fileName )   ## 获取文件的最后修改时间
+    def __needReload( self ):
+        modifyTime = os.path.getmtime( self.__fileName )   ## 获取文件的最后修改时间
         if( modifyTime > self.__lastModifyTime ):
             self.__lastModifyTime = modifyTime
             return True
@@ -67,9 +64,9 @@ class BaseConfig:
     '''
     @summary: 读取配置文件
     '''
-    def __readConfigFile( self, fileName ):
+    def __readConfigFile( self ):
         config = ConfigParser()
-        config.read( fileName, 'UF-8' )
+        config.read( self.__fileName, 'UTF-8' )
         sections = config.sections()
         
         for sec in sections:
@@ -79,17 +76,20 @@ class BaseConfig:
         
     '''
     @summary: 设置配置文件中的内容
+    
+    @param key:        配置内容的键
+    @param value:     配置内容的值
     '''
     def __addConfigInfo( self, key, value ):
-        self.__lastModifyTime = 0
+        self.__configInfoDictionary.setdefault( key, value )
         
     '''
     @summary: 获取配置信息
     
-    @return: 配置信息的key-value集合
+    @return: 配置信息的key-value字典
     '''
-    def getConfigInfo( self, fileName ):
-        if( self.__needReload( fileName ) ):
+    def getConfigInfo( self ):
+        if( self.__needReload() ):
             self.__readConfigFile()
         
         return self.__configInfoDictionary

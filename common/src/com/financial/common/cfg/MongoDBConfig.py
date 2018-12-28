@@ -1,11 +1,12 @@
 #!/usr/local/bin/python3.7
 #-*- coding: utf-8 -*-
 '''
-Created on 2018年12月25日
+Created on 2018-12-25
 
-com.financial.common.db.MongoDBConfig -- shortdesc
+com.financial.common.db.MongoDBConfig -- MongoDB鏁版嵁搴撻厤缃俊鎭幏鍙栧伐鍏风被
 
-com.financial.common.db.MongoDBConfig is a description
+com.financial.common.db.MongoDBConfig is a 
+MongoDB鏁版嵁搴撻厤缃俊鎭幏鍙栧伐鍏风被
 
 It defines classes_and_methods
 
@@ -18,7 +19,12 @@ It defines classes_and_methods
 @deffield    updated: Updated
 '''
 from com.financial.common.cfg.BaseConfig import BaseConfig
+from com.financial.common.cfg.FilePathConfig import FilePathConfig
 
 class MongoDBConfig( BaseConfig ):
     
-    s = ""
+    ## 閰嶇疆鏂囦欢鎵�鏈変綅缃紝鏀惧埌Linux鏈哄櫒涓婇渶瑕佹敼璺緞
+    configFilePath = FilePathConfig().getConfigInfo().get( "mongodb_config_path" )
+
+    def __init__( self ):
+        super( MongoDBConfig, self ).__init__( self.configFilePath )
