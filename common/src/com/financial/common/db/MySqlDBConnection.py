@@ -95,6 +95,6 @@ class MySqlDBConnection( object ):
     @summary: 从数据库连接池中返加一个连接
     '''
     def getMysqlDBSession( self ):
-        dbSession = self.mysqlDBSession
+        dbSession = self.mysqlDBSession()
         
         return dbSession

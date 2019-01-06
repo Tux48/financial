@@ -46,7 +46,7 @@ class TimeUtil:
         '''
         如果当前每周第几天是周六或周日，或当前月、天在不加载数据时间范围同，不加载数据
         '''
-        if( ( not dayOfWeek in self.__MONDAY_TO_FRIDAY_CODE ) or 
+        if( ( not dayOfWeek in self.__MONDAY_TO_FRIDAY_CODE ) and 
             ( not monthAndDay in self.NO_LOAD_TIMES ) ):
             return False
         

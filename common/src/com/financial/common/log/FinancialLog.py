@@ -50,7 +50,7 @@ class FinancialLog:
         '''
         设置日志文件内容格式
         '''
-        logging.basicConfig( level = logging.DEBUG, format = self.LOGGING_MSG_FORMAT, datefmt=self.LOGGING_DATE_FORMAT )
+        logging.basicConfig( level = logging.DEBUG, format = self.LOGGING_MSG_FORMAT, datefmt = self.LOGGING_DATE_FORMAT )
         self.__log = logging.getLogger()
         handler = TimedRotatingFileHandler( logFile, "midnight", 1, encoding = "UTF-8" )    ## 每天凌晨生成一个新日志文件
         formatter = logging.Formatter(self.LOGGING_MSG_FORMAT )
