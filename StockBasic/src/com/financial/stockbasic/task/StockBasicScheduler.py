@@ -43,8 +43,8 @@ class StockBasicScheduler:
         try:
             StockBasicLog().getLog().info( "准备开始执行任务调度" )
             self.__scheduler.add_job( func = self.__task.loadingStockBasicData, trigger = "cron", 
-                                      day_of_week = "mon-fri" , hour = "9", minute = "10", 
-                                      start_date = "2019-01-01", end_date = "2030-12-31" )
+                                      day_of_week = "mon-fri" , hour = "09", minute = "10" , 
+                                      start_date = "2019-01-01", end_date = "2030-12-31")
             self.__scheduler.start()
             StockBasicLog().getLog().info( "已经执行任务调度" )
         except Exception as ex:

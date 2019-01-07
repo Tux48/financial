@@ -25,8 +25,7 @@ It defines classes_and_methods
 import threading
 import pandas as pd
 
-import tushare as ts
-
+from com.financial.common.api.TushareAPI import TushareAPI
 from com.financial.common.bean.StockBasicBean import StockBasicBean
 
 class StockBasicAPI:
@@ -36,12 +35,6 @@ class StockBasicAPI:
     
     ## 线程锁，用于处于多线程序时的单例不同问题
     __instance_lock = threading.Lock()
-    
-    ## 股票接口 token
-    __TS_TOKEN = "ba9b75382e295fb2074d4c8530a3fafeff5d88f33816041b0122a02c"
-
-    ## 股票接口
-    __tsPro = None
     
     '''
     @note: _instance 一定要是单位下划线，如果双下划线，无法实现单例。原因？？？
@@ -56,25 +49,14 @@ class StockBasicAPI:
         return StockBasicAPI._instance
     
     def __init__( self  ):
-        if self.__first_init:
-            self.__initAPI()
-            self.__first_init = False
-    
-    '''
-    @summary: 初始化获取股票数据API接口
-    '''
-    def __initAPI( self ):
-        '''
-        初始化股票API接口
-        '''
-        ts.set_token( self.__TS_TOKEN )
-        self.__tsPro =ts.pro_api()
+        pass
     
     '''
     @summary: 加载股票基本数据，并以股票代码为key，股票数据bean为value，放入字典中
     '''
     def getStockBasicData( self ):
-        data = self.__tsPro.stock_basic( fields='ts_code,symbol,name,area,industry,fullname,enname,market,exchange,curr_type,list_status,list_date,delist_date,is_hs' )
+        tsPro = TushareAPI().getTushareAPI()
+        data = tsPro.stock_basic( fields='ts_code,symbol,name,area,industry,fullname,enname,market,exchange,curr_type,list_status,list_date,delist_date,is_hs' )
         dataFormat = pd.DataFrame( data )
         
         newDataDict = dict()
