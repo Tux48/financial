@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3.7
 #-*- coding: utf-8 -*-
 '''
-Created on 2019Äê1ÔÂ7ÈÕ
+Created on 2019-1-7
 
 com.financial.kline.Start -- shortdesc
 

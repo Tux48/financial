@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3.7
 #-*- coding: utf-8 -*-
 '''
-Created on 2019年1月7日
+Created on 2019-1-7
 
 com.financial.kline.cfg.KLineConfig -- shortdesc
 
@@ -17,3 +17,12 @@ It defines classes_and_methods
 
 @deffield    updated: Updated
 '''
+from com.financial.common.cfg.BaseConfig import BaseConfig
+
+class KLineConfig( BaseConfig ):
+    
+    ## 配置文件所有位置，放到Linux机器上需要改路径
+    configFilePath = "D:\\Projects\\financial\\KLine\\config\\k_line.config"
+    
+    def __init__(self ):
+        super( KLineConfig, self ).__init__( self.configFilePath )
