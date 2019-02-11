@@ -3,11 +3,14 @@
 '''
 Created on 2019-1-7
 
-com.financial.kline.log.KLineLog -- shortdesc
+com.financial.kline.log.KLineLog -- 日K线模块日志类
 
-com.financial.kline.log.KLineLog is a description
+com.financial.kline.log.KLineLog is a 
+日K线模块日志类，是一个单例工具类。
 
 It defines classes_and_methods
+def __initLog( self ):    初始化日志
+def getLog( self ):    返回已初始化好的日志
 
 @author: Tux48
 

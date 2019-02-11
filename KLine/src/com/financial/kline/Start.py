@@ -17,3 +17,8 @@ It defines classes_and_methods
 
 @deffield    updated: Updated
 '''
+
+from com.financial.kline.task.KLineScheduler import KLineScheduler
+
+scheduler = KLineScheduler()
+scheduler.start()

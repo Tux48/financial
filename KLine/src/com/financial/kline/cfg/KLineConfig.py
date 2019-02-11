@@ -3,9 +3,9 @@
 '''
 Created on 2019-1-7
 
-com.financial.kline.cfg.KLineConfig -- shortdesc
+com.financial.kline.cfg.KLineConfig -- 日K线模块配置类
 
-com.financial.kline.cfg.KLineConfig is a description
+com.financial.kline.cfg.KLineConfig is a 日K线模块配置类，暂时用于配置日志路径
 
 It defines classes_and_methods
 

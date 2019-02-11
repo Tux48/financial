@@ -3,11 +3,13 @@
 '''
 Created on 2019-1-7
 
-com.financial.kline.task.KLineScheduler -- shortdesc
+com.financial.kline.task.KLineScheduler -- 获取日K线数据的定时任务模块
 
-com.financial.kline.task.KLineScheduler is a description
+com.financial.kline.task.KLineScheduler is a 
+获取日K线数据的定时任务模块
 
 It defines classes_and_methods
+def start( self ):    启动任务调度器
 
 @author: Tux48
 
@@ -28,6 +30,7 @@ class KLineScheduler:
     ## 任务调度器
     __scheduler  =BlockingScheduler()
     
+    ## 任务模块
     __task = KLineTask()
     
     '''
@@ -36,8 +39,8 @@ class KLineScheduler:
     def start( self ):
         try:
             KLineLog().getLog().info( "准备开始执行任务调度" )
-            self.__scheduler.add_job( func = self.__task.loadingKLineData, trigger = "cron", 
-                                      day_of_week = "mon-fri" , hour = "20", minute = "00" , 
+            self.__scheduler.add_job( func = self.__task.loadKLineData, trigger = "cron", 
+                                      day_of_week = "mon-fri" , hour = "19", minute = "00" , 
                                       start_date = "2019-01-01", end_date = "2030-12-31" )
             self.__scheduler.start()
             KLineLog().getLog().info( "已经执行任务调度" )

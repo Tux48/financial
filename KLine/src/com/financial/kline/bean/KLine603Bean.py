@@ -24,10 +24,10 @@ from sqlalchemy import Column, Integer, String, Float
 
 Base = declarative_base()
 
-class StockBasicBean( Base ):
+class KLine603Bean( Base ):
     
     ## 映身的数据库表名
-    __tablename__ = "k_line_602"
+    __tablename__ = "k_line_603"
     
     id = Column( Integer, name="id", primary_key=True, autoincrement=True )
     
@@ -59,7 +59,7 @@ class StockBasicBean( Base ):
     pctChg = Column( Float, name = "pct_chg", nullable = True )
     
     ## 成交量 （手）
-    vol = Column( float, name = "vol", nullable = True )
+    vol = Column( Float, name = "vol", nullable = True )
     
     ## 成交额 （千元）
-    amount = Column( float, name = "amount", nullable = True )
+    amount = Column( Float, name = "amount", nullable = True )

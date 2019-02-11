@@ -18,7 +18,11 @@ It defines classes_and_methods
 @deffield    updated: Updated
 '''
 
+from com.financial.kline.engine.KLineEngine import KLineEngine
+
 class KLineTask:
     
-    def loadingKLineData( self ):
-        str = ""
+    __kLineEngine = KLineEngine()
+    
+    def loadKLineData( self ):
+        self.__kLineEngine.start()
