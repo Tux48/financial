@@ -22,3 +22,4 @@ It defines classes_and_methods
 from com.financial.stockbasic.task.StockBasicScheduler import StockBasicScheduler
 
 scheduler = StockBasicScheduler()
+scheduler.start()
