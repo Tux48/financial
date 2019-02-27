@@ -57,38 +57,37 @@ class KLineEngine:
             kLineDatasFormat = self.__getKLineDatas( stockCode, startDate, endDate )
             kLineDatas = BuildKLineBeanUtil().buildKLineBean( stockCodePrefix, kLineDatasFormat )
             self.__saveKLineData( kLineDatas )
+            
+        time.sleep( 5 )
     
     
-    '''
-    
-    '''    
-    def __kLineHistoryDataProcess( self, stockBasicBean ):
-        stockCode = stockBasicBean.tsCode
-        stockCodePrefix = self.__getStockCodePrefix( stockCode )
-        
-        startDate = stockBasicBean.listDate
-        date = datetime.datetime.strptime( startDate, "%Y%m%d" )
-        endDate = ( date + datetime.timedelta( days = 365 ) ).strftime( "%Y%m%d"  )
-        year = startDate[ 0:4 ]
-        
-        while True:
-            
-            if year > "2019":
-                break
-            
-            year = startDate[ 0:4 ]
-            
-            kLineDatasFormat = self.__getKLineDatas( stockCode, startDate, endDate )
-            kLineDatas = BuildKLineBeanUtil().buildKLineBean( stockCodePrefix, kLineDatasFormat )
-            self.__saveKLineData( kLineDatas )
-            
-            date = datetime.datetime.strptime( endDate, "%Y%m%d" )
-            startDate = ( date + datetime.timedelta( days = 1 ) ).strftime( "%Y%m%d"  )
-            
-            date = datetime.datetime.strptime( startDate, "%Y%m%d" )
-            endDate = ( date + datetime.timedelta( days = 365 ) ).strftime( "%Y%m%d"  )
-            
-            time.sleep( 5 )
+#     def __kLineHistoryDataProcess( self, stockBasicBean ):
+#         stockCode = stockBasicBean.tsCode
+#         stockCodePrefix = self.__getStockCodePrefix( stockCode )
+#         
+#         startDate = stockBasicBean.listDate
+#         date = datetime.datetime.strptime( startDate, "%Y%m%d" )
+#         endDate = ( date + datetime.timedelta( days = 365 ) ).strftime( "%Y%m%d"  )
+#         year = startDate[ 0:4 ]
+#         
+#         while True:
+#             
+#             if year > "2019":
+#                 break
+#             
+#             year = startDate[ 0:4 ]
+#             
+#             kLineDatasFormat = self.__getKLineDatas( stockCode, startDate, endDate )
+#             kLineDatas = BuildKLineBeanUtil().buildKLineBean( stockCodePrefix, kLineDatasFormat )
+#             self.__saveKLineData( kLineDatas )
+#             
+#             date = datetime.datetime.strptime( endDate, "%Y%m%d" )
+#             startDate = ( date + datetime.timedelta( days = 1 ) ).strftime( "%Y%m%d"  )
+#             
+#             date = datetime.datetime.strptime( startDate, "%Y%m%d" )
+#             endDate = ( date + datetime.timedelta( days = 365 ) ).strftime( "%Y%m%d"  )
+#             
+#             time.sleep( 5 )
         
         
     '''

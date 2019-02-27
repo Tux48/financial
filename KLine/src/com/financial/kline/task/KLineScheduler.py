@@ -40,7 +40,7 @@ class KLineScheduler:
         try:
             KLineLog().getLog().info( "准备开始执行任务调度" )
             self.__scheduler.add_job( func = self.__task.loadKLineData, trigger = "cron", 
-                                      day_of_week = "mon-fri" , hour = "19", minute = "00" , 
+                                      day_of_week = "mon-fri" , hour = "18", minute = "00" , 
                                       start_date = "2019-01-01", end_date = "2030-12-31" )
             self.__scheduler.start()
             KLineLog().getLog().info( "已经执行任务调度" )
