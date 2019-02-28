@@ -3,10 +3,10 @@
 '''
 Created on 2019-1-4
 
-com.financial.klw.bean.KLineWeek001Bean -- 数据bean
+com.financial.klm.bean.KLineMonth001Bean -- 数据bean
 
-com.financial.klw.bean.KLineWeek001Bean is a 
-数据bean，对数据库中k_line_week_001表的映射
+com.financial.klm.bean.KLineMonth001Bean is a 
+数据bean，对数据库中k_line_Month_001表的映射
 
 It defines classes_and_methods
 
@@ -24,10 +24,10 @@ from sqlalchemy import Column, Integer, String, Float
 
 Base = declarative_base()
 
-class KLineWeek001Bean( Base ):
+class KLineMonth001Bean( Base ):
     
     ## 映身的数据库表名
-    __tablename__ = "k_line_week_001"
+    __tablename__ = "k_line_month_001"
     
     id = Column( Integer, name="id", primary_key=True, autoincrement=True )
     
