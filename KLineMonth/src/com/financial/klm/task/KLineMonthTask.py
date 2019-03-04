@@ -22,7 +22,7 @@ from com.financial.klm.engine.KLineMonthEngine import KLineMonthEngine
 
 class KLineMonthTask:
     
-    __kLineMonthkEngine = KLineMonthEngine()
+    __kLineMonthEngine = KLineMonthEngine()
     
     def loadKLineMonthData( self ):
         self.__kLineMonthEngine.start()

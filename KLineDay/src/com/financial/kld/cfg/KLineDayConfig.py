@@ -19,10 +19,10 @@ It defines classes_and_methods
 '''
 from com.financial.common.cfg.BaseConfig import BaseConfig
 
-class KLineConfig( BaseConfig ):
+class KLineDayConfig( BaseConfig ):
     
     ## 配置文件所有位置，放到Linux机器上需要改路径
-    configFilePath = "D:\\Projects\\financial\\KLine\\config\\k_line.config"
+    configFilePath = "D:\\Projects\\financial\\KLineDay\\config\\k_line_day.config"
     
     def __init__(self ):
-        super( KLineConfig, self ).__init__( self.configFilePath )
+        super( KLineDayConfig, self ).__init__( self.configFilePath )

@@ -59,6 +59,6 @@ class KLineMonthAPI:
     '''
     def getKLineMonthDatas( self, stockCode, startDate, endDate ):
         tsPro = TushareAPI().getTushareAPI()
-        data = tsPro.Monthly( ts_code= stockCode, start_date = startDate, end_date = endDate )
+        data = tsPro.monthly( ts_code= stockCode, start_date = startDate, end_date = endDate )
         
         return pd.DataFrame( data )

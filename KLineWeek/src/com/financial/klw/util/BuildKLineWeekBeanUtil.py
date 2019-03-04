@@ -148,47 +148,47 @@ class BuildKLineWeekBeanUtil:
         bean.tsCode = row[ "ts_code" ]
         bean.tsDate = row[ "trade_date" ]
         
-        if isnan(  row[ "open" ] ):
+        if row[ "open" ] == None or isnan(  row[ "open" ] ):
             bean.open = 0.0
         else:
             bean.open = row[ "open" ]
             
-        if isnan( row[ "high" ] ):
+        if row[ "high" ] == None or isnan( row[ "high" ] ):
             bean.high = 0.0
         else:
             bean.high = row[ "high" ]
             
-        if isnan( row[ "low" ] ):
+        if row[ "low" ] == None or isnan( row[ "low" ] ):
             bean.low = 0.0
         else:
             bean.low = row[ "low" ]
             
-        if isnan( row[ "close" ] ):
+        if row[ "close" ] == None or isnan( row[ "close" ] ):
             bean.close = 0.0
         else:
             bean.close = row[ "close" ]
             
-        if isnan( row[ "pre_close" ] ):
+        if row[ "pre_close" ] == None or isnan( row[ "pre_close" ] ):
             bean.preClose  =0.0
         else:
             bean.preClose = row[ "pre_close" ]
             
-        if isnan( row[ "change" ] ):
+        if row[ "change" ] == None or isnan( row[ "change" ] ):
             bean.change = 0.0
         else:
             bean.change = row[ "change" ]
             
-        if isnan( row[ "pct_chg" ] ):
+        if row[ "pct_chg" ] == None or isnan( row[ "pct_chg" ] ):
             bean.pctChg = 0.0
         else:
             bean.pctChg = row[ "pct_chg" ]
             
-        if isnan( row[ "vol" ] ):
+        if row[ "vol" ] == None or isnan( row[ "vol" ] ):
             bean.vol  =0.0
         else:
             bean.vol = row[ "vol" ]
         
-        if isnan( row[ "amount" ] ):
+        if row[ "amount" ] == None or isnan( row[ "amount" ] ):
             bean.amount = 0.0
         else:
             bean.amount = row[ "amount" ]

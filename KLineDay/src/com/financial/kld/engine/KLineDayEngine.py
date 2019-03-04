@@ -55,7 +55,7 @@ class KLineDayEngine:
             endDate = self.__getCurrentDate() ## K线数据获取结束时间为当前时间
             
             kLineDayDatasFormat = self.__getKLineDayDatas( stockCode, startDate, endDate )
-            kLineDayDatas = BuildKLineDayBeanUtil().buildKLineBean( stockCodePrefix, kLineDayDatasFormat )
+            kLineDayDatas = BuildKLineDayBeanUtil().buildKLineDayBean( stockCodePrefix, kLineDayDatasFormat )
             self.__saveKLineDayData( kLineDayDatas )
             
         time.sleep( 5 )
