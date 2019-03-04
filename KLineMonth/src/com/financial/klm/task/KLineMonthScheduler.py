@@ -22,10 +22,10 @@ def start( self ):    启动任务调度器
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from com.financial.klm.log.KLineWeekLog import KLineMonthLog
+from com.financial.klm.log.KLineMonthLog import KLineMonthLog
 from com.financial.klm.task.KLineMonthTask import KLineMonthTask
 
-class KLineWeekScheduler:
+class KLineMonthScheduler:
     
     ## 任务调度器
     __scheduler  =BlockingScheduler()
