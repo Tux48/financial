@@ -3,10 +3,10 @@
 '''
 Created on 2019-1-4
 
-com.financial.reinstated.bean.Reinstated601Bean -- 数据bean
+com.financial.reinstated.bean.ReinstatedHfq002Bean -- 数据bean
 
-com.financial.reinstated.bean.Reinstated601Bean is a 
-数据bean，对数据库中reinstated_601表的映射
+com.financial.reinstated.bean.ReinstatedHfq002Bean is a 
+数据bean，对数据库中reinstated_hfq_002表的映射
 
 It defines classes_and_methods
 
@@ -24,10 +24,10 @@ from sqlalchemy import Column, Integer, String, Float
 
 Base = declarative_base()
 
-class Reinstated601Bean( Base ):
+class ReinstatedHfq002Bean( Base ):
     
     ## 映身的数据库表名
-    __tablename__ = "reinstated_601"
+    __tablename__ = "reinstated_hfq_002"
     
     id = Column( Integer, name="id", primary_key=True, autoincrement=True )
     
@@ -63,6 +63,3 @@ class Reinstated601Bean( Base ):
     
     ## 成交额 （千元）
     amount = Column( Float, name = "amount" , default = 0.0 )
-    
-     ## 类型，1-前复权、2-后复权、0-未复权
-    type = Column( Integer, name = "type", nullable  = True, default = 0 )

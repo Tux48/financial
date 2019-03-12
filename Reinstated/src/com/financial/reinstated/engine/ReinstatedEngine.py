@@ -30,8 +30,13 @@ def __saveReinstatedData( self , kLineDatas ):    保存复权数据
 import time
 import datetime
 
-from com.financial.reinstated.util.BuildReinstatedSQLUtil import BuildReinstatedSQLUtil
-from com.financial.reinstated.util.BuildReinstatedBeanUtil import BuildReinstatedBeanUtil
+from com.financial.reinstated.util.bean.BuildReinstatedNoneBeanUtil import BuildReinstatedNoneBeanUtil
+from com.financial.reinstated.util.bean.BuildReinstatedHfqBeanUtil import BuildReinstatedHfqBeanUtil
+from com.financial.reinstated.util.bean.BuildReinstatedQfqBeanUtil import BuildReinstatedQfqBeanUtil
+
+from com.financial.reinstated.util.sql.BuildReinstatedNoneSQLUtil import BuildReinstatedNoneSQLUtil
+from com.financial.reinstated.util.sql.BuildReinstatedQfqSQLUtil import BuildReinstatedQfqSQLUtil
+from com.financial.reinstated.util.sql.BuildReinstatedHfqSQLUtil import BuildReinstatedHfqSQLUtil
 
 from com.financial.reinstated.api.ReinstatedAPI import ReinstatedAPI
 from com.financial.reinstated.dao.ReinstatedDao import ReinstatedDao
@@ -42,16 +47,6 @@ class ReinstatedEngine:
     ## 存放股票基本数据的字典
     __stockBasicDatas = None
     
-    ## 复权类型-未复权
-    __REINSTATED_NONE = 0
-    
-    ## 复权类型-前复权
-    __REINSTATED_QFQ = 1
-    
-    ## 复权类型-后复权
-    __REINSTATED_HFQ = 2
-    
-    
     '''
     @summary: 启动数据加载及处理
     '''
@@ -59,92 +54,128 @@ class ReinstatedEngine:
         self.__getStockBasicDict()
         for stockData in self.__stockBasicDatas.values():
             try:
-                self.__reinstatedNoneHistoryDataProcess( stockData )
-                self.__reinstatedQfqHistoryDataProcess( stockData )
-                self.__reinstatedHfqHistoryDataProcess( stockData )
+                self.__reinstatedNoneDataProcess( stockData )
+                self.__reinstatedQfqDataProcess( stockData )
+                self.__reinstatedHfqDataProcess( stockData )
             except Exception:
                 logInfo = "{} 股票出现错误".format( stockData.tsCode )
                 ReinstatedLog.getLog( self ).error( logInfo )
     
     
     def __reinstatedNoneDataProcess( self, stockBasicBean ):
-        self.__reinstatedDataProcess( stockBasicBean, self.__REINSTATED_NONE )
-        
-    def __reinstatedQfqDataProcess( self, stockBasicBean ):
-        self.__reinstatedDataProcess( stockBasicBean, self.__REINSTATED_QFQ )
-        
-    def __reinstatedHfqDataProcess( self, stockBasicBean ):
-        self.__reinstatedDataProcess( stockBasicBean, self.__REINSTATED_HFQ )
-    
-    
-    '''
-    @summary: 复权数据加载、格式化、保存
-    
-    @param stockBasicBean: 股票基本数据
-    '''    
-    def __reinstatedDataProcess( self, stockBasicBean ):
         stockCode = stockBasicBean.tsCode
         stockCodePrefix = self.__getStockCodePrefix( stockCode )
         
-        querySQL = BuildReinstatedSQLUtil().buildSQL( stockCodePrefix )
+        querySQL = BuildReinstatedNoneSQLUtil().buildSQL( stockCodePrefix )
+        if querySQL != None:
+            startDate = self.__getLastReinstatedDate( querySQL, stockBasicBean )
+            endDate = self.__getCurrentDate() ## 数据获取结束时间为当前时间
+            
+            reinstatedDatasFormat = self.__getReinstatedDatas( stockCode, None, startDate, endDate )
+            reinstatedDatas = BuildReinstatedNoneBeanUtil().buildReinstatedNoneBean( stockCodePrefix, reinstatedDatasFormat )
+            self.__saveReinstatedData( reinstatedDatas )
+            
+        time.sleep( 1 )
+        
+    def __reinstatedQfqDataProcess( self, stockBasicBean ):
+        stockCode = stockBasicBean.tsCode
+        stockCodePrefix = self.__getStockCodePrefix( stockCode )
+        
+        querySQL = BuildReinstatedQfqSQLUtil().buildSQL( stockCodePrefix )
         if querySQL != None:
             startDate = self.__getLastReinstatedDate( querySQL, stockBasicBean )
             endDate = self.__getCurrentDate() ## K线数据获取结束时间为当前时间
             
-            reinstatedDatasFormat = self.__getReinstatedDatas( stockCode, startDate, endDate )
-            reinstatedDatas = BuildReinstatedBeanUtil().buildReinstatedBean( stockCodePrefix, reinstatedDatasFormat )
+            reinstatedDatasFormat = self.__getReinstatedDatas( stockCode, "qfq", startDate, endDate )
+            reinstatedDatas = BuildReinstatedQfqBeanUtil().buildReinstatedQfqBean( stockCodePrefix, reinstatedDatasFormat )
             self.__saveReinstatedData( reinstatedDatas )
             
-        time.sleep( 5 )
-    
-    
-    def __reinstatedNoneHistoryDataProcess( self, stockBasicBean ):
-        self.__reinstatedHistoryDataProcess( stockBasicBean, self.__REINSTATED_NONE )
+        time.sleep( 1 )
         
-    def __reinstatedQfqHistoryDataProcess( self, stockBasicBean ):
-        self.__reinstatedHistoryDataProcess( stockBasicBean, self.__REINSTATED_QFQ )
-        
-    def __reinstatedHfqHistoryDataProcess( self, stockBasicBean ):
-        self.__reinstatedHistoryDataProcess( stockBasicBean, self.__REINSTATED_HFQ )
-        
-        
-    '''
-    
-    '''    
-    def __reinstatedHistoryDataProcess( self, stockBasicBean, reinstatedType ):
+    def __reinstatedHfqDataProcess( self, stockBasicBean ):
         stockCode = stockBasicBean.tsCode
         stockCodePrefix = self.__getStockCodePrefix( stockCode )
         
-        startDate = stockBasicBean.listDate
-        date = datetime.datetime.strptime( startDate, "%Y%m%d" )
-        endDate = ( date + datetime.timedelta( days = 365 ) ).strftime( "%Y%m%d"  )
-        year = startDate[ 0:4 ]
-        
-        rtype = None
-        
-        if reinstatedType == 1:
-            rtype = "qfq"
-        elif reinstatedType == 2:
-            rtype = "hfq"
+        querySQL = BuildReinstatedHfqSQLUtil().buildSQL( stockCodePrefix )
+        if querySQL != None:
+            startDate = self.__getLastReinstatedDate( querySQL, stockBasicBean )
+            endDate = self.__getCurrentDate() ## K线数据获取结束时间为当前时间
             
-        while True:
-            
-            if year > "2019":
-                break
-            
-            year = startDate[ 0:4 ]
-            
-            reinstatedDatasFormat = self.__getReinstatedDatas( stockCode, rtype, startDate, endDate )
-            reinstatedDatas = BuildReinstatedBeanUtil().buildReinstatedBean( stockCodePrefix, reinstatedDatasFormat, reinstatedType )
+            reinstatedDatasFormat = self.__getReinstatedDatas( stockCode, "hfq", startDate, endDate )
+            reinstatedDatas = BuildReinstatedHfqBeanUtil().buildReinstatedHfqBean( stockCodePrefix, reinstatedDatasFormat )
             self.__saveReinstatedData( reinstatedDatas )
             
-            date = datetime.datetime.strptime( endDate, "%Y%m%d" )
-            startDate = ( date + datetime.timedelta( days = 1 ) ).strftime( "%Y%m%d"  )
-            
-            date = datetime.datetime.strptime( startDate, "%Y%m%d" )
-            endDate = ( date + datetime.timedelta( days = 365 ) ).strftime( "%Y%m%d"  )
-            
-            time.sleep( 5 )
+        time.sleep( 1 )
+    
+    
+#     '''
+#     @summary: 复权数据加载、格式化、保存
+#     
+#     @param stockBasicBean: 股票基本数据
+#     '''    
+#     def __reinstatedDataProcess( self, stockBasicBean ):
+#         stockCode = stockBasicBean.tsCode
+#         stockCodePrefix = self.__getStockCodePrefix( stockCode )
+#         
+#         querySQL = BuildReinstatedSQLUtil().buildSQL( stockCodePrefix )
+#         if querySQL != None:
+#             startDate = self.__getLastReinstatedDate( querySQL, stockBasicBean )
+#             endDate = self.__getCurrentDate() ## K线数据获取结束时间为当前时间
+#             
+#             reinstatedDatasFormat = self.__getReinstatedDatas( stockCode, startDate, endDate )
+#             reinstatedDatas = BuildReinstatedBeanUtil().buildReinstatedBean( stockCodePrefix, reinstatedDatasFormat )
+#             self.__saveReinstatedData( reinstatedDatas )
+#             
+#         time.sleep( 1 )
+    
+    
+#     def __reinstatedNoneHistoryDataProcess( self, stockBasicBean ):
+#         self.__reinstatedHistoryDataProcess( stockBasicBean, self.__REINSTATED_NONE )
+#         
+#     def __reinstatedQfqHistoryDataProcess( self, stockBasicBean ):
+#         self.__reinstatedHistoryDataProcess( stockBasicBean, self.__REINSTATED_QFQ )
+#         
+#     def __reinstatedHfqHistoryDataProcess( self, stockBasicBean ):
+#         self.__reinstatedHistoryDataProcess( stockBasicBean, self.__REINSTATED_HFQ )
+        
+        
+#     '''
+#     
+#     '''    
+#     def __reinstatedHistoryDataProcess( self, stockBasicBean, reinstatedType ):
+#         stockCode = stockBasicBean.tsCode
+#         stockCodePrefix = self.__getStockCodePrefix( stockCode )
+#         
+#         startDate = stockBasicBean.listDate
+#         date = datetime.datetime.strptime( startDate, "%Y%m%d" )
+#         endDate = ( date + datetime.timedelta( days = 365 ) ).strftime( "%Y%m%d"  )
+#         year = startDate[ 0:4 ]
+#         
+#         rtype = None
+#         
+#         if reinstatedType == 1:
+#             rtype = "qfq"
+#         elif reinstatedType == 2:
+#             rtype = "hfq"
+#             
+#         while True:
+#             
+#             if year > "2019":
+#                 break
+#             
+#             year = startDate[ 0:4 ]
+#             
+#             reinstatedDatasFormat = self.__getReinstatedDatas( stockCode, rtype, startDate, endDate )
+#             reinstatedDatas = BuildReinstatedBeanUtil().buildReinstatedBean( stockCodePrefix, reinstatedDatasFormat, reinstatedType )
+#             self.__saveReinstatedData( reinstatedDatas )
+#             
+#             date = datetime.datetime.strptime( endDate, "%Y%m%d" )
+#             startDate = ( date + datetime.timedelta( days = 1 ) ).strftime( "%Y%m%d"  )
+#             
+#             date = datetime.datetime.strptime( startDate, "%Y%m%d" )
+#             endDate = ( date + datetime.timedelta( days = 365 ) ).strftime( "%Y%m%d"  )
+#             
+#             time.sleep( 1 )
         
         
     '''

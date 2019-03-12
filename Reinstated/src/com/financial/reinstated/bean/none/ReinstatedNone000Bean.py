@@ -3,10 +3,10 @@
 '''
 Created on 2019-1-4
 
-com.financial.reinstated.bean.Reinstated300Bean -- 数据bean
+com.financial.reinstated.bean.ReinstatedNone000Bean -- 数据bean
 
-com.financial.reinstated.bean.Reinstated300Bean is a 
-数据bean，对数据库中reinstated_300表的映射
+com.financial.reinstated.bean.ReinstatedNone000Bean is a 
+数据bean，对数据库中reinstated_none_000表的映射
 
 It defines classes_and_methods
 
@@ -24,10 +24,10 @@ from sqlalchemy import Column, Integer, String, Float
 
 Base = declarative_base()
 
-class Reinstated300Bean( Base ):
+class ReinstatedNone000Bean( Base ):
     
     ## 映身的数据库表名
-    __tablename__ = "reinstated_300"
+    __tablename__ = "reinstated_none_000"
     
     id = Column( Integer, name="id", primary_key=True, autoincrement=True )
     
@@ -63,6 +63,3 @@ class Reinstated300Bean( Base ):
     
     ## 成交额 （千元）
     amount = Column( Float, name = "amount" , default = 0.0 )
-    
-     ## 类型，1-前复权、2-后复权、0-未复权
-    type = Column( Integer, name = "type", nullable  = True, default = 0 )
