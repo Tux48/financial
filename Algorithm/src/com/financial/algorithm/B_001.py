@@ -18,35 +18,17 @@ It defines classes_and_methods
 
 @deffield    updated: Updated
 '''
-import numpy as np
 import pandas as pd
 
-from com.financial.algorithm.dao.AlgorithmDao import AlgorithmDao
-from com.financial.algorithm.util.BuildSQLUtil import BuildSQLUtil
-
-from com.financial.graphics.GraphicsForKLine import GraphicsForKLine
 
 class B_001:
     
     '''
     '''
-    def compute( self, stockCode ):
-        stockCodePrefix = self.__getStockCodePrefix( stockCode )
-        SQL = self.__genSQLByStockCode( stockCodePrefix )
-        stockDatas = self.__getStockDatas( SQL, stockCode )
-        stockDataFrame = self.__transformToDataFrame( stockDatas )
-        
-        kLineXAxis = self.__getKLineXAxis( stockDataFrame )
-        kLineYAxis = self.__getKLineYAxis( stockDataFrame )
-        ( allDownPoint, buyPoints ) = self.__algorithmStep1( stockDataFrame )  # 连续跌的点
-#         downPoints = self.__getDownPoints( allDataBlock )
-#         buyPoints = self.__algorithmStep2( allDataBlock )   # 可以买的点
-        
-        graphicsForKLine = GraphicsForKLine( stockCode )
-        graphicsForKLine.addKLine( kLineXAxis, kLineYAxis )  # 画K线
-        graphicsForKLine.addDownPoints( allDownPoint ) # 画连跌点
-        graphicsForKLine.addBuyPoints( buyPoints )   # 画可以买入点
-        graphicsForKLine.draw()
+    def compute( self, datas ):
+        stockDataFrame = self.__transformToDataFrame( datas )
+
+        return self.__algorithmStep1( stockDataFrame )
 
     
     '''
@@ -75,24 +57,34 @@ class B_001:
             ## 日K线的收盘价都比各自前面的第四根日K线的收盘价低
             if endPointClose < startPointClose:
                 
-                tradeDate = self.__transformDate( endPoint[ "trade_date" ] )
+                tradeDate = endPoint[ "trade_date" ]
                 open1 = endPoint[ "open" ]  # 不知为啥，open会有警告，所以改成open1
-                high = endPoint[ "high" ]
-                low = endPoint[ "low" ]
                 close = endPoint[ "close" ]
+                low = endPoint[ "low" ]
+                high = endPoint[ "high" ]
+                volume = endPoint[ "vol" ]
                 
-                dataBlock.append( [ tradeDate, open1, close, low, high ] )
+                dataBlock.append( [ tradeDate, open1, close, low, high, volume ] )
             else:
                 dataBlock.clear()
                 
             dataBlockLen = len( dataBlock )
             if dataBlockLen >= 9:
-#                   allDataBlock.append( dataBlock.copy() )
                 ( downDataBlock, buyPoint ) = self.__algorithmStep2( dataBlock.copy() )
                 buyPointLen = len( buyPoint )
                     
                 if buyPointLen > 0:
-                    allDownPoint.extend( downDataBlock )
+                    downData = []
+                    
+                    index = 1
+                    for data in downDataBlock:
+                        date = data[ 0 ]
+                        height = data[ 4 ]
+                        downData.append( { "name": index, "value": [ date, height ] } )
+                        
+                        index += 1
+                        
+                    allDownPoint.extend( downData )
                     allBuyPoint.extend( buyPoint )
                     
                 dataBlock.clear()
@@ -103,7 +95,7 @@ class B_001:
     
     
     '''
-    @summary: 算法第二步
+    @summary: 算法第二步，第8根日K线或第9根日K线的最低价小于第6根日k线或第7根日K线的最低价，在第9根日K线的下方显示△,此时符合买入的条件.
     
     @param allDataBlock: 算法第一步的计算结果
     '''
@@ -197,90 +189,9 @@ class B_001:
     
     
     '''
-    @summary: 获取连续跌的点的X和Y轴数据
-    
-    @param allDataBlock: 连续跌的点的数据
-    '''
-    def __getDownPoints( self, allDataBlock ):
-        
-        downPoints = []
-        
-        for dataBlock in allDataBlock:
-            for data in dataBlock:
-                downPoints.append( [ data[ 0 ], data[ 1 ] ] )
-            
-        return downPoints
-        
-    '''
-    @summary: 计算图形X轴数据（交易时间为X轴）
-    
-    @param stockDataFrame: DataFrame格式的股票数据
-    '''
-    def __getKLineXAxis(self, stockDataFrame ):
-
-        xAxis = []
-        index = 0
-        
-        for data in np.array( stockDataFrame[ [ "trade_date" ] ] ):
-            tradeDate = data[ 0 ]
-            xAxis.insert( index, "{}/{}/{}".format( tradeDate[0:4], tradeDate[4:6], tradeDate[6:8] ) )
-            index += 1
-            
-        return xAxis
-    
-    
-    '''
-    @summary: 计算图形Y轴数据
-    
-    @param stockDataFrame: DataFrame格式的股票数据
-    '''
-    def __getKLineYAxis(self, stockDataFrame ):
-        return  np.array( stockDataFrame[ [ "open", "close", "low", "high" ] ] )
-    
-    
-    '''
     @summary: 将list转换为DataFrame
     
     @param stockDatas: list格式的股票数据
     '''
     def __transformToDataFrame( self, stockDatas ):
-        return pd.DataFrame( stockDatas, columns = [ "trade_date", "open", "high", "low", "close", "pre_close", "change", "pct_chg", "vol", "amount" ] )
-    
-    
-    '''
-    @summary: 将yyyymmdd时间格式转换为yyyy/mm/dd
-    
-    @param tradeDate: yyyymmdd时间格式
-    '''
-    def __transformDate( self, tradeDate ):
-        return "{}/{}/{}".format( tradeDate[0:4], tradeDate[4:6], tradeDate[6:8] ) 
-        
-        
-    '''
-    @summary: 根据SQL和股票代码获取相关数据
-    
-    @param SQL: 执行SQL
-    @param stockCode: 股票代码
-    '''
-    def __getStockDatas( self, SQL, stockCode ):
-        return AlgorithmDao().getAlgorithmDate( SQL, stockCode )
-    
-        
-    '''
-    @summary: 根据股票代码前缀，生成相应的SQL
-    
-    @param stockCodePrefix: 股票代码前缀
-    '''    
-    def __genSQLByStockCode( self, stockCodePrefix ):
-        SQL = BuildSQLUtil().buildKLineSQL( stockCodePrefix )
-        
-        return SQL
-    
-        
-    '''
-    @summary: 获取股票代码的前3位
-    
-    @return: 股票代码的前3位
-    '''
-    def __getStockCodePrefix( self, stockCode ):
-        return stockCode[ 0:3 ]
+        return pd.DataFrame( stockDatas, columns = [ "trade_date", "open", "close", "low", "high",  "vol" ] )
