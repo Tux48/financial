@@ -3,12 +3,16 @@
 '''
 Created on 2019年4月11日
 
-com.financial.algorithm.B_001 -- 第一个买入算法
+com.financial.algorithm.B_001 -- B001算法
 
 com.financial.algorithm.B_001 is a 
-2019-04-09提出的第一个买入算法，参考doc目录下的 "买入算法一.docx"
+2019-04-09提出的第一个买入算法，参见doc目录下的买入算法1_B001.docx
 
 It defines classes_and_methods
+def compute( self, datas )    算法入口
+def __algorithmStep1( self, stockDataFrame )    算法第一步
+def __algorithmStep2( self, dataBlock )    算法第二步
+def __transformToDataFrame    将list类型的数据集转换为DataFrame
 
 @author: Tux48
 
@@ -24,6 +28,11 @@ import pandas as pd
 class B_001:
     
     '''
+    @summary: 算法入口
+    
+    @datas: 股票或指数数据
+    
+    @return: 计算结果。包括所有连跌点数据、所有可买入点数据
     '''
     def compute( self, datas ):
         stockDataFrame = self.__transformToDataFrame( datas )
@@ -37,6 +46,8 @@ class B_001:
                         第2根标注2，依次类推。如果某一根的日K线的收盘价不小于前面第四根的日K线的收盘价，则原计数清零,需重新开始计算。
     
     @param stockDataFrame: DataFrame格式的股票数据
+    
+    @return: 计算结果。包括所有连跌点数据、所有可买入点数据
     '''
     def __algorithmStep1( self, stockDataFrame ):
         
@@ -47,15 +58,16 @@ class B_001:
         allBuyPoint = []    # 所可以买入的点
         dataBlock = []  # 某一单独数据块
         
+        downData = []
+        index = 1
+        
         for endIndex in range( 4, length ):
-            startPoint = stockDataFrame.iloc[ startIndex ]  # 比较的开始点
-            endPoint = stockDataFrame.iloc[ endIndex ]    # 比较的结束点
-            
-            startPointClose = startPoint[ "close" ] # 开始点收盘价
-            endPointClose = endPoint[ "close" ] # 结束点收盘价
+            startPointClose = stockDataFrame.iloc[ startIndex ][ "close" ] # 开始点收盘价
+            endPointClose = stockDataFrame.iloc[ endIndex ][ "close" ] # 结束点收盘价
             
             ## 日K线的收盘价都比各自前面的第四根日K线的收盘价低
             if endPointClose < startPointClose:
+                endPoint = stockDataFrame.iloc[ endIndex ]
                 
                 tradeDate = endPoint[ "trade_date" ]
                 open1 = endPoint[ "open" ]  # 不知为啥，open会有警告，所以改成open1
@@ -65,29 +77,25 @@ class B_001:
                 volume = endPoint[ "vol" ]
                 
                 dataBlock.append( [ tradeDate, open1, close, low, high, volume ] )
+                downData.append( { "name": index, "value": [ tradeDate, high ] } )
+                index += 1
             else:
                 dataBlock.clear()
+                downData.clear()
+                index = 1
                 
             dataBlockLen = len( dataBlock )
             if dataBlockLen >= 9:
-                ( downDataBlock, buyPoint ) = self.__algorithmStep2( dataBlock.copy() )
+                buyPoint = self.__algorithmStep2( dataBlock.copy() )
                 buyPointLen = len( buyPoint )
                     
                 if buyPointLen > 0:
-                    downData = []
-                    
-                    index = 1
-                    for data in downDataBlock:
-                        date = data[ 0 ]
-                        height = data[ 4 ]
-                        downData.append( { "name": index, "value": [ date, height ] } )
-                        
-                        index += 1
-                        
                     allDownPoint.extend( downData )
                     allBuyPoint.extend( buyPoint )
                     
                 dataBlock.clear()
+                downData.clear()
+                index = 1
                                 
             startIndex += 1
             
@@ -98,6 +106,8 @@ class B_001:
     @summary: 算法第二步，第8根日K线或第9根日K线的最低价小于第6根日k线或第7根日K线的最低价，在第9根日K线的下方显示△,此时符合买入的条件.
     
     @param allDataBlock: 算法第一步的计算结果
+    
+    @return: 计算结果。包括所有连跌点数据、所有可买入点数据
     '''
     def __algorithmStep2( self, dataBlock ):
                     
@@ -118,80 +128,23 @@ class B_001:
         
         buyPoint = []
         
-        if dataLow9 < dataLow7:
+        if dataLow9 < dataLow6 and dataLow9 < dataLow7:
             tradeDate = data9[ 0 ]
             buyPoint.append( [ tradeDate, dataLow9 ] )
             
-        if dataLow8 < dataLow6:
+        if dataLow8 < dataLow6 and dataLow8 < dataLow7:
             tradeDate = data8[ 0 ]
             buyPoint.append( [ tradeDate, dataLow8 ] )
 
-        return ( list( dataBlock0_9 ), buyPoint )
-
-    
-#     '''
-#     @summary: 算法第二步
-#     
-#     @param allDataBlock: 算法第一步的计算结果
-#     '''
-#     def __algorithmStep2( self, allDataBlock ):
-#         
-# #         buyPoint = []
-# #         
-# #         for dataBlock in allDataBlock:
-# #             
-# #             dataBlockTuple = tuple( dataBlock ) # 将列表转换为元组。便于下标取值
-# #             blockLen = len( dataBlockTuple )
-# #             
-# #             ## 第8个点与第6个点比较，9个点与第7个点进行比较，依次类推
-# #             for endIndex in range( 7, blockLen ):
-# #                 startIndex = endIndex - 2
-# #                 
-# #                 startData = dataBlockTuple[ startIndex ]
-# #                 endData = dataBlockTuple[ endIndex ]
-# #                 
-# #                 startLow = startData[ 2 ]
-# #                 endLow = endData[ 2 ]
-# #                 if endLow < startLow:
-# #                     tradeDate = endData[ 0 ]
-# #                     buyPoint.append( [ tradeDate, endLow ] )
-#                     
-#         buyPoint = []
-#         buyPointTemp = []
-#         allDataBlockTemp = allDataBlock.copy()
-# 
-#         for dataBlock in allDataBlockTemp:
-#             
-#             dataBlockTuple = tuple( dataBlock ) # 将列表转换为元组。便于下标取值
-#             blockLen = len( dataBlockTuple )
-#             
-#             ## 第8个点与第6个点比较，9个点与第7个点进行比较，依次类推
-#             for endIndex in range( 7, blockLen ):
-#                 startIndex = endIndex - 2
-#                 
-#                 startData = dataBlockTuple[ startIndex ]
-#                 endData = dataBlockTuple[ endIndex ]
-#                 
-#                 startLow = startData[ 2 ]
-#                 endLow = endData[ 2 ]
-#                 if endLow < startLow:
-#                     tradeDate = endData[ 0 ]
-#                     buyPointTemp.append( [ tradeDate, endLow ] )
-#                     
-#             # 删除没有买点的连跌数据
-#             if len( buyPointTemp ) > 0:
-#                 buyPoint.extend( buyPointTemp.copy() )
-#                 buyPointTemp.clear()
-#             else:
-#                 allDataBlock.remove( dataBlock )
-#         
-#         return buyPoint
+        return buyPoint
     
     
     '''
-    @summary: 将list转换为DataFrame
+    @summary: 将list类型的数据集转换为DataFrame
     
     @param stockDatas: list格式的股票数据
+    
+    @return: 转换后的数据集
     '''
     def __transformToDataFrame( self, stockDatas ):
         return pd.DataFrame( stockDatas, columns = [ "trade_date", "open", "close", "low", "high",  "vol" ] )
