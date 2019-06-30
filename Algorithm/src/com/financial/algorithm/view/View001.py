@@ -44,6 +44,6 @@ def buildStock001ToJson( tsCode ):
 
 @return: 计算结果。包括指数数据、所有连跌点数据、所有可买入点数据
 '''
-@view001.route( "/index_day/<tsCode>" )
+@view001.route( "/index/<tsCode>" )
 def buildIndexDay001ToJson( tsCode ):
-    return service001.buildIndexDay001ToJson( tsCode )
+    return service001.buildIndex001ToJson( tsCode )
