@@ -20,7 +20,8 @@ It defines classes_and_methods
 
 import json
 
-from com.financial.algorithm.B_001 import B_001
+from com.financial.algorithm.a001.B001 import B001
+from com.financial.algorithm.a001.S001 import S001
 from com.financial.algorithm.util.AlgorithmUtil import AlgorithmUtil
 from com.financial.algorithm.dao.AlgorithmDao import AlgorithmDao
 
@@ -32,15 +33,15 @@ from com.financial.algorithm.dao.AlgorithmDao import AlgorithmDao
 
 @return: 计算结果。包括股票数据、所有连跌点数据、所有可买入点数据
 '''
-def buildKLineB001ToJson( tsCode ):
+def buildKLine001ToJson( tsCode ):
     tsCodePrefix = AlgorithmUtil.get_tsCodePrefix( tsCode )
     SQL = AlgorithmUtil().buildKLineSQL( tsCodePrefix )
     
     datas = AlgorithmDao().getAlgorithmDate( SQL, tsCode )
-    b_001 = B_001()
-    ( allDownPoint, allBuyPoint ) = b_001.compute( datas )
+    ( allDownPoint, allBuyPoint ) = B001().compute( datas )
+    ( allUpPoint, allSellPoint ) = S001().compute( datas )
     
-    return json.dumps( { "data": datas, "down": allDownPoint, "buy": allBuyPoint }  )
+    return json.dumps( { "data": datas, "down": allDownPoint, "buy": allBuyPoint, "up": allUpPoint, "sell": allSellPoint }  )
 
 
 '''
@@ -50,13 +51,12 @@ def buildKLineB001ToJson( tsCode ):
 
 @return: 计算结果。包括指数数据、所有连跌点数据、所有可买入点数据
 '''
-def buildIndexDayB001ToJson( tsCode ):
+def buildIndexDay001ToJson( tsCode ):
     tsCodeSuffix = AlgorithmUtil().get_tsCodeSuffix( tsCode )
     SQL = AlgorithmUtil().buildIndexDaySQL( tsCodeSuffix )
     
     datas = AlgorithmDao().getAlgorithmDate( SQL, tsCode )
+    ( allDownPoint, allBuyPoint ) = B001().compute( datas )
+    ( allUpPoint, allSellPoint ) = S001().compute( datas )
     
-    b_001 = B_001()
-    ( allDownPoint, allBuyPoint ) = b_001.compute( datas )
-    
-    return json.dumps( { "data": datas, "down": allDownPoint, "buy": allBuyPoint }  )
+    return json.dumps( { "data": datas, "down": allDownPoint, "buy": allBuyPoint, "up": allUpPoint, "sell": allSellPoint }  )

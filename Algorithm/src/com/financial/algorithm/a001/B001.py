@@ -12,7 +12,6 @@ It defines classes_and_methods
 def compute( self, datas )    算法入口
 def __algorithmStep1( self, stockDataFrame )    算法第一步
 def __algorithmStep2( self, dataBlock )    算法第二步
-def __transformToDataFrame    将list类型的数据集转换为DataFrame
 
 @author: Tux48
 
@@ -22,10 +21,9 @@ def __transformToDataFrame    将list类型的数据集转换为DataFrame
 
 @deffield    updated: Updated
 '''
-import pandas as pd
 
 
-class B_001:
+class B001:
     
     '''
     @summary: 算法入口
@@ -35,9 +33,7 @@ class B_001:
     @return: 计算结果。包括所有连跌点数据、所有可买入点数据
     '''
     def compute( self, datas ):
-        stockDataFrame = self.__transformToDataFrame( datas )
-
-        return self.__algorithmStep1( stockDataFrame )
+        return self.__algorithmStep1( datas )
 
     
     '''
@@ -45,14 +41,14 @@ class B_001:
                         连续出现九根日K线，并且这些日K线的收盘价都比各自前面的第四根日K线的收盘价低,在其日K线下方标记相应的数字第1根标注1，
                         第2根标注2，依次类推。如果某一根的日K线的收盘价不小于前面第四根的日K线的收盘价，则原计数清零,需重新开始计算。
     
-    @param stockDataFrame: DataFrame格式的股票数据
+    @param datas: 股票数据
     
     @return: 计算结果。包括所有连跌点数据、所有可买入点数据
     '''
-    def __algorithmStep1( self, stockDataFrame ):
+    def __algorithmStep1( self, datas ):
         
         startIndex = 0
-        length = len( stockDataFrame )
+        length = len( datas )
         
         allDownPoint = []   # 存放所有符合第一步计算条件的数据块
         allBuyPoint = []    # 所可以买入的点
@@ -62,19 +58,19 @@ class B_001:
         index = 1
         
         for endIndex in range( 4, length ):
-            startPointClose = stockDataFrame.iloc[ startIndex ][ "close" ] # 开始点收盘价
-            endPointClose = stockDataFrame.iloc[ endIndex ][ "close" ] # 结束点收盘价
+            startPointClose = datas[ startIndex ][ 2 ] # 开始点收盘价
+            endPointClose = datas[ endIndex ][ 2 ] # 结束点收盘价
             
             ## 日K线的收盘价都比各自前面的第四根日K线的收盘价低
             if endPointClose < startPointClose:
-                endPoint = stockDataFrame.iloc[ endIndex ]
+                endPoint = datas[ endIndex ]
                 
-                tradeDate = endPoint[ "trade_date" ]
-                open1 = endPoint[ "open" ]  # 不知为啥，open会有警告，所以改成open1
-                close = endPoint[ "close" ]
-                low = endPoint[ "low" ]
-                high = endPoint[ "high" ]
-                volume = endPoint[ "vol" ]
+                tradeDate = endPoint[ 0 ]
+                open1 = endPoint[ 1 ]  # 不知为啥，open会有警告，所以改成open1
+                close = endPoint[ 2 ]
+                low = endPoint[ 3 ]
+                high = endPoint[ 4 ]
+                volume = endPoint[ 5 ]
                 
                 dataBlock.append( [ tradeDate, open1, close, low, high, volume ] )
                 downData.append( { "name": index, "value": [ tradeDate, high ] } )
@@ -111,8 +107,7 @@ class B_001:
     '''
     def __algorithmStep2( self, dataBlock ):
                     
-        dataBlockTuple = tuple( dataBlock ) # 将列表转换为元组。便于下标取值
-        dataBlock0_9 = dataBlockTuple[ 0 : 9 ]
+        dataBlock0_9 = dataBlock[ :9 ]
         
         ## 取出第6、7、8、9节点数据。第9对比7，8对比6
         data6 = dataBlock0_9[ 5 ]
@@ -137,14 +132,3 @@ class B_001:
             buyPoint.append( [ tradeDate, dataLow8 ] )
 
         return buyPoint
-    
-    
-    '''
-    @summary: 将list类型的数据集转换为DataFrame
-    
-    @param stockDatas: list格式的股票数据
-    
-    @return: 转换后的数据集
-    '''
-    def __transformToDataFrame( self, stockDatas ):
-        return pd.DataFrame( stockDatas, columns = [ "trade_date", "open", "close", "low", "high",  "vol" ] )

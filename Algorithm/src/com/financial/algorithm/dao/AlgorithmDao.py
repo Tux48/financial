@@ -44,7 +44,6 @@ class AlgorithmDao:
         result = mySqlDBSession.execute( text(SQL), {"tsCode" : tsCode}  )
         
         datas = []
-        index = 0
         for row in result:
             tradeDate = self.__transformDate( row[ 0 ] )
             open1 = row[ 1 ]    # 不知为啥，open会有警告，所以改成open1
@@ -53,9 +52,7 @@ class AlgorithmDao:
             high = row[ 4 ]
             volume = row[ 5 ]
 
-            datas.insert( index, [ tradeDate, open1, close, low, high, volume ] )
-            
-            index += 1
+            datas.append( [ tradeDate, open1, close, low, high, volume ] )
             
         AlgorithmLog().getLog().info( "获取到数据" )
         
