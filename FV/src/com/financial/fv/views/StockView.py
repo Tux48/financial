@@ -3,9 +3,9 @@
 '''
 Created on 2019年5月11日
 
-com.financial.fv.views.IndexDay_View -- shortdesc
+com.financial.fv.views.KLine_View -- shortdesc
 
-com.financial.fv.views.IndexDay_View is a description
+com.financial.fv.views.KLine_View is a description
 
 It defines classes_and_methods
 
@@ -22,12 +22,12 @@ from flask import Blueprint
 
 from com.financial.fv.cfg.FvConfig import FvConfig
 
-indexDay = Blueprint( "indexDay", __name__ )
+stock = Blueprint( "stock", __name__ )
 
 
-@indexDay.route( "/b001/<tsCode>" )
-def b001( tsCode ):
-    url = FvConfig().getIndexDayB001UrlConfig().format( tsCode )
+@stock.route( "/001/<tsCode>" )
+def stock001( tsCode ):
+    url = FvConfig.getStock001UrlConfig().format( tsCode )
     http = urllib3.PoolManager()
     r = http.request( "GET",  url )
 

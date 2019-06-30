@@ -33,8 +33,8 @@ class FvConfig( BaseConfig ):
     
     @return: 股票b001算法的后台http接口
     '''
-    def getKLineB001UrlConfig( self ):
-        return self.getConfigInfo()[ "kline_b001_url" ]
+    def getStock001UrlConfig( self ):
+        return self.getConfigInfo()[ "stock_001_url" ]
     
     
     '''
@@ -42,5 +42,5 @@ class FvConfig( BaseConfig ):
     
     @return: 指数b001算法的后台http接口
     '''
-    def getIndexDayB001UrlConfig( self ):
-        return self.getConfigInfo()[ "index_day_b001_url" ]
+    def getIndex001UrlConfig( self ):
+        return self.getConfigInfo()[ "index_001_url" ]

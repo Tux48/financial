@@ -21,14 +21,14 @@ It defines classes_and_methods
 from flask import Flask
 
 from com.financial.fv.views.Fv_View import fv
-from com.financial.fv.views.IndexDay_View import indexDay
-from com.financial.fv.views.KLine_View import kLine
+from com.financial.fv.views.IndexView import index
+from com.financial.fv.views.StockView import stock
 
 app = Flask( __name__ )
 
 app.register_blueprint( fv, url_prefix= "/fv" )
-app.register_blueprint( kLine, url_prefix= "/kline" )
-app.register_blueprint( indexDay, url_prefix= "/index_day" )
+app.register_blueprint( stock, url_prefix= "/stock" )
+app.register_blueprint( index, url_prefix= "/index" )
 
 if __name__ == '__main__':
     app.run( host = "127.0.0.1", port = "8080", debug = True )
