@@ -26,19 +26,18 @@ import com.financial.fv.services.FvServices as fvServices
 # from flask.templating import render_template
 fv = Blueprint( "fv", __name__ )
 
-@fv.route( "/" )
-def index():
+@fv.route( "/stock" )
+def stock():
     return render_template( "stock.html" )
 
-@fv.route( "/allStock" )
-def allStock():
-    return fvServices.buildStockToJson()
+@fv.route( "/index" )
+def index():
+    return render_template( "index.html" )
 
-@fv.route( "/allSSEIndex" )
-def allSSEIndex():
-    return fvServices.buildStockToJson()
+@fv.route( "/allStockCode" )
+def allStockCode():
+    return fvServices.buildStockCodeToJson()
 
-
-@fv.route( "/allSZSEIndex" )
-def allSZSEIndex():
-    return fvServices.buildStockToJson()
+@fv.route( "/allIndexCode" )
+def allIndexCode():
+    return fvServices.buildIndexCodeToJson()

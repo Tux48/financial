@@ -2,7 +2,7 @@
 <html style="height: 100%">
 	<head>
 		<meta charset="UTF-8">
-		<title>Stock</title>
+		<title>指数</title>
 	</head>
 	
 	<script src="{{ url_for('static', filename='echarts.js') }}"></script>
@@ -50,7 +50,7 @@
 	    var kdjDatas;
 	
 	    // 获取指定股票数据
-	    $.getJSON( '/index_day/b001/399001.SZ' ).done( function( datas ) {
+	    $.getJSON( '/index/001/399001.SZ' ).done( function( datas ) {
 	    	data = splitData( datas.data )
 	    	dataForBuy = datas.buy
 	    	dataForDown = datas.down

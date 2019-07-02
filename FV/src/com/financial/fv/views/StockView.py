@@ -18,12 +18,15 @@ It defines classes_and_methods
 @deffield    updated: Updated
 '''
 import urllib3
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 from com.financial.fv.cfg.FvConfig import FvConfig
 
 stock = Blueprint( "stock", __name__ )
 
+@stock.route( "/" )
+def root():
+    return render_template( "index.html" )
 
 @stock.route( "/001/<tsCode>" )
 def stock001( tsCode ):

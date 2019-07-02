@@ -22,16 +22,13 @@ import json
 
 import com.financial.fv.dao.FvDao as fvDao
 
-def buildStockToJson():
+def buildStockCodeToJson():
     datas = fvDao.getAllStock()
     return json.dumps( datas )
 
 
-def buildSSEIndexToJson( tsCode ):
-    datas = fvDao.getAllSSEIndex( tsCode )
-    return json.dumps( datas )
-
-
-def buildSZSEIndexToJson( tsCode ):
-    datas = fvDao.getAllSZSEIndex( tsCode )
-    return json.dumps( datas )
+def buildIndexCodeToJson():
+    sseIndexs = fvDao.getAllSSEIndex()
+    szseIndexs = fvDao.getAllSZSEIndex()
+    
+    return json.dumps( { "sse": sseIndexs, "szse": szseIndexs } )
