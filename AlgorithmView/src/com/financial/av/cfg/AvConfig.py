@@ -19,13 +19,13 @@ It defines classes_and_methods
 '''
 from com.financial.common.cfg.BaseConfig import BaseConfig
 
-class FvConfig( BaseConfig ):
+class AvConfig( BaseConfig ):
     
     ## 配置文件所有位置，放到Linux机器上需要改路径
     configFilePath = "D:\\Projects\\financial\\Fv\\config\\fv.config"
     
     def __init__(self ):
-        super( FvConfig, self ).__init__( self.configFilePath )
+        super( AvConfig, self ).__init__( self.configFilePath )
         
     
     '''

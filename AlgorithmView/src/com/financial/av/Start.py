@@ -20,9 +20,9 @@ It defines classes_and_methods
 
 from flask import Flask
 
-from com.financial.fv.views.FvView import fv
-from com.financial.fv.views.IndexView import index
-from com.financial.fv.views.StockView import stock
+from com.financial.av.views.AvView import fv
+from com.financial.av.views.IndexView import index
+from com.financial.av.views.StockView import stock
 
 app = Flask( __name__ )
 

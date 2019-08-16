@@ -20,15 +20,15 @@ It defines classes_and_methods
 
 import json
 
-import com.financial.fv.dao.FvDao as fvDao
+import com.financial.av.dao.AvDao as avDao
 
 def buildStockCodeToJson():
-    datas = fvDao.getAllStock()
+    datas = avDao.getAllStock()
     return json.dumps( datas )
 
 
 def buildIndexCodeToJson():
-    sseIndexs = fvDao.getAllSSEIndex()
-    szseIndexs = fvDao.getAllSZSEIndex()
+    sseIndexs = avDao.getAllSSEIndex()
+    szseIndexs = avDao.getAllSZSEIndex()
     
     return json.dumps( { "sse": sseIndexs, "szse": szseIndexs } )

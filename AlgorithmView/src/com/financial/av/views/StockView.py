@@ -20,7 +20,7 @@ It defines classes_and_methods
 import urllib3
 from flask import Blueprint, render_template
 
-from com.financial.fv.cfg.FvConfig import FvConfig
+from com.financial.av.cfg.AvConfig import AvConfig
 
 stock = Blueprint( "stock", __name__ )
 
@@ -30,7 +30,7 @@ def root():
 
 @stock.route( "/001/<tsCode>" )
 def stock001( tsCode ):
-    url = FvConfig.getStock001UrlConfig().format( tsCode )
+    url = AvConfig.getStock001UrlConfig().format( tsCode )
     http = urllib3.PoolManager()
     r = http.request( "GET",  url )
 

@@ -20,7 +20,7 @@ It defines classes_and_methods
 
 from flask import Blueprint, render_template
 
-import com.financial.fv.services.FvServices as fvServices
+import com.financial.av.services.AvServices as avServices
 
 
 # from flask.templating import render_template
@@ -36,8 +36,8 @@ def index():
 
 @fv.route( "/allStockCode" )
 def allStockCode():
-    return fvServices.buildStockCodeToJson()
+    return avServices.buildStockCodeToJson()
 
 @fv.route( "/allIndexCode" )
 def allIndexCode():
-    return fvServices.buildIndexCodeToJson()
+    return avServices.buildIndexCodeToJson()
