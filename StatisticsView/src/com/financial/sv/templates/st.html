@@ -96,49 +96,67 @@
 	<font size=3>撤销St最大涨幅: 正最大涨幅</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<font size=3>撤销st历史最低价: 正最低价</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<font size=3>撤销St最大跌幅: 正最大跌幅</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<font size=3>是否历史最低: 历史最低</font>
+	<font size=3>是否历史最低: 历史最低</font><br>
+	&nbsp;&nbsp;&nbsp;
+	<font size=3>ST期间涨幅: 涨幅</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<br>
 	<br>
 	<table width="100%">
 		<thead>
 			<tr style="height: 30px">
-				<th align="center" style="font-size:14px;">代码</th>
-				<th align="center" style="font-size:14px;">股票名</th>
-				<th align="center" style="font-size:14px;">ST期间</th>
-				<th align="center" style="font-size:14px;" class="cursor">起始价</th>
-				<th align="center" style="font-size:14px;" class="cursor">最低价</th>
-				<th align="center" style="font-size:14px;" class="cursor">最大跌幅(%)</th>
-				<th align="center" style="font-size:14px;" class="cursor">最高价</th>
-				<th align="center" style="font-size:14px;" class="cursor">最大涨幅(%)</th>
-				<th align="center" style="font-size:14px;" class="cursor">时长(天)</th>
-				<th align="center" style="font-size:14px;">撤销ST时间</th>
-				<th align="center" style="font-size:14px;" class="cursor">收盘价</th>
-				<th align="center" style="font-size:14px;" class="cursor">正最高价</th>
-				<th align="center" style="font-size:14px;" class="cursor">正最大涨幅(%)</th>
-				<th align="center" style="font-size:14px;" class="cursor">正最低价</th>
-				<th align="center" style="font-size:14px;" class="cursor">正最大跌(%)</th>
-				<th align="center" style="font-size:14px;">历史最低</th>
+				<th align="center" style="font-size:12px;">代码</th>
+				<th align="center" style="font-size:12px;">股票名</th>
+				<th align="center" style="font-size:12px;">ST期间</th>
+				<th align="center" style="font-size:12px;" class="cursor">ST时长(天)</th>
+				<th align="center" style="font-size:12px;" class="cursor">起始价</th>
+				<th align="center" style="font-size:12px;" class="cursor">最低价</th>
+				<th align="center" style="font-size:12px;" class="cursor">最大跌幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">深最大跌幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">上最大跌幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">时长(天)</th>
+				<th align="center" style="font-size:12px;" class="cursor">最高价</th>
+				<th align="center" style="font-size:12px;" class="cursor">最大涨幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">深最大涨幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">上最大涨幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">收盘价</th>
+				<th align="center" style="font-size:12px;" class="cursor">涨幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">深涨幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">上涨幅(%)</th>
+				<th align="center" style="font-size:12px;">撤销ST时间</th>
+				<th align="center" style="font-size:12px;" class="cursor">正最高价</th>
+				<th align="center" style="font-size:12px;" class="cursor">正最大涨幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">正最低价</th>
+				<th align="center" style="font-size:12px;" class="cursor">正最大跌(%)</th>
+				<th align="center" style="font-size:12px;">历史最低</th>
 			</tr>
 		</thead>
 		<tbody id="trPanel">
 			{% for data in datas %}
 				<tr style="height: 30px">
-					<td align="center" style="font-size:14px;font-family:微软雅黑;">{{ data[ 0 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 1 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 2 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 3 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 4 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 5 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 6 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 7 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 8 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 9 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 10 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 11 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 12 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 13 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 14 ] }}</td>
-					<td align="center" style="font-size:14px;">{{ data[ 15 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 0 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 1 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 2 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 17 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 3 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 4 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 5 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 18 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 19 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 8 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 6 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 7 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 20 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 21 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 10 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 16 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 22 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 23 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 9 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 11 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 12 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 13 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 14 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 15 ] }}</td>
 				</tr>
 			{% endfor %}
 		</tbody>
