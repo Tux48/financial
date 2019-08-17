@@ -23,7 +23,6 @@ import os
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
-from com.financial.common.cfg.FilePathConfig import FilePathConfig
 
 class FinancialLog:
     
@@ -33,13 +32,7 @@ class FinancialLog:
     ## 日志时间格式
     LOGGING_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
     
-    ## 默认日志文件路径
-    logPath =FilePathConfig().getConfigInfo().get( "log_path" )
-    
-    ## 默认日志文件名
-    logFile =FilePathConfig().getConfigInfo().get( "log_file" )
-    
-    def __init__( self, logFilePath = logPath, logFileName = logFile ):
+    def __init__( self, logFilePath, logFileName ):
         
         ## 如果目录不存在，创建设目录
         if not os.path.exists( logFilePath ):
