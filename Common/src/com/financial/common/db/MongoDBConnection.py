@@ -22,7 +22,7 @@ It defines classes_and_methods    def getMongoDBConnection( self ):    获取数
 import threading
 from pymongo import MongoClient
 
-from com.financial.common.cfg.MongoDBConfig import MongoDBConfig
+from com.financial.common.cfg.CommonConfig import CommonConfig
 
 class MongoDBConnection( object ):
     
@@ -51,10 +51,10 @@ class MongoDBConnection( object ):
     @summary: 获取数据库连连，每次调用生成一个新的连接。
     '''
     def getMongoDBConnection( self ):
-        dbConfig = MongoDBConfig()
+        dbConfig = CommonConfig()
         configDict = dbConfig.getConfigInfo()
-        host = configDict.get( "host" )
-        port = int( configDict.get( "port" ) )
+        host = configDict.get( "mongo_host" )
+        port = int( configDict.get( "mongo_port" ) )
         
         mongoDBClient = MongoClient( host, port )
         

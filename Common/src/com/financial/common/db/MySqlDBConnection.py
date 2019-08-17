@@ -25,7 +25,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 import threading
 
-from com.financial.common.cfg.MySqlConfig import MySqlConfig
+from com.financial.common.cfg.CommonConfig import CommonConfig
 from builtins import int
 
 class MySqlDBConnection( object ):
@@ -64,7 +64,7 @@ class MySqlDBConnection( object ):
     @summary: 初始化数据库连接池
     '''
     def __initDB( self ):
-        dbConfig = MySqlConfig()
+        dbConfig = CommonConfig()
         configDict = dbConfig.getConfigInfo()
         
         dbUser = configDict.get( "username" )
