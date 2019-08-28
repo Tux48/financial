@@ -35,14 +35,14 @@ class IndexLineDayEngine:
     def __SSE( self ):
         indexBasicDatas = self.__getIndexBasicDatas( "SSE" )
         for index, row in indexBasicDatas.iterrows():
-            self.__indexLineDaySSEDataProcess( row[ "ts_code" ], row[ "base_date" ] )
+            self.__indexLineDaySSEDataProcess( row[ "ts_code" ], "19910101" )
                 
             index
         
     def __SZSE( self ):
         indexBasicDatas = self.__getIndexBasicDatas( "SZSE" )
         for index, row in indexBasicDatas.iterrows():
-            self.__indexLineDaySZSEDataProcess( row[ "ts_code" ], row[ "base_date" ] )
+            self.__indexLineDaySZSEDataProcess( row[ "ts_code" ], "19910101" )
                 
             index
         
@@ -67,7 +67,7 @@ class IndexLineDayEngine:
         endDate = self.__getCurrentDate() ## 指数日线行情数据获取结束时间为当前时间
              
         indexLineDayDatasFormat = self.__getIndexLineDayDatas( tsCode, startDate, endDate )
-        indexLineDayDatas = BuildIndexLineDayBeanUtil().buildIndexLineDaySSEBean( indexLineDayDatasFormat )
+        indexLineDayDatas = BuildIndexLineDayBeanUtil().buildIndexLineDaySZSEBean( indexLineDayDatasFormat )
         self.__saveIndexLineDayData( indexLineDayDatas )
              
         time.sleep( 1 )

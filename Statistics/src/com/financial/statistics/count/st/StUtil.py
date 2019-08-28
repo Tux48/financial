@@ -91,6 +91,9 @@ class StUtil:
             stBean.shMaxUp = row[ 21 ]
             stBean.szUp = row[ 22 ]
             stBean.shUp = row[ 23 ]
+            stBean.maxDownDifference = row[ 24 ]
+            stBean.maxUpDifference = row[ 25 ]
+            stBean.upDifference = row[ 26 ]
             
             stBeans.append( stBean )
             
@@ -145,12 +148,168 @@ class StUtil:
     @summary: 构建st统计数据查询SQL
     '''
     def buildStStatisticsSQL(self, stType ):
-        SQL = "select ts_code, name, st_date, pre_close, st_min_low, st_max_down, st_max_high, st_max_up, st_duration, cancle_st_date, st_last_close, cancle_st_high, cancle_st_max_up, cancle_st_low, cancle_st_max_down, is_his_low, st_up, st_days, sz_max_down, sh_max_down, sz_max_up, sh_max_up, sz_up, sh_up from st_statistics where cancle_st_date is not null and st_type=0"
+        SQL = "select ts_code, name, st_date, pre_close, st_min_low, st_max_down, st_max_high, st_max_up, st_duration, cancle_st_date, st_last_close, cancle_st_high, cancle_st_max_up, cancle_st_low, cancle_st_max_down, is_his_low, st_up, st_days, sz_max_down, sh_max_down, sz_max_up, sh_max_up, sz_up, sh_up, max_down_diff, max_up_diff, up_diff from st_statistics where cancle_st_date is not null and st_type=0"
         if stType == STAR_ST_TYPE:
-            SQL = "select ts_code, name, st_date, pre_close, st_min_low, st_max_down, st_max_high, st_max_up, st_duration, cancle_st_date, st_last_close, cancle_st_high, cancle_st_max_up, cancle_st_low, cancle_st_max_down, is_his_low, st_up, st_days, sz_max_down, sh_max_down, sz_max_up, sh_max_up, sz_up, sh_up from st_statistics where cancle_st_date is not null and st_type=1"
+            SQL = "select ts_code, name, st_date, pre_close, st_min_low, st_max_down, st_max_high, st_max_up, st_duration, cancle_st_date, st_last_close, cancle_st_high, cancle_st_max_up, cancle_st_low, cancle_st_max_down, is_his_low, st_up, st_days, sz_max_down, sh_max_down, sz_max_up, sh_max_up, sz_up, sh_up, max_down_diff, max_up_diff, up_diff from st_statistics where cancle_st_date is not null and st_type=1"
             
         return SQL
+    
+    
+    '''
+    @summary: 计算最大跌幅、 深最大跌、上最大跌、差值、最大涨幅、深最大涨、上最大涨、差值、涨幅、深涨、上涨、差值的平均值
+    
+    @param datas: 数据集合
+    
+    @return: 计算结果 
+    '''
+    def getAverage( self, stDatas ):
         
+        stMaxDownSum = 0.0
+        szMaxDownSum = 0.0
+        shMaxDownSum = 0.0
+        maxDownDiffSum = 0.0
+        
+        stMaxUpSum = 0.0
+        szMaxUpSum = 0.0
+        shMaxUpSum = 0.0
+        maxUpDiffSum = 0.0
+        
+        stUpSum = 0.0
+        szUpSum = 0.0
+        shUpSum = 0.0
+        upDiffSum = 0.0
+
+        for data in stDatas:
+            stMaxDownSum +=data[ 5 ]
+            szMaxDownSum += data[ 18 ]
+            shMaxDownSum += data[ 19 ]
+            maxDownDiffSum += data[ 24 ]
+            
+            stMaxUpSum += data[ 7 ]
+            szMaxUpSum += data[ 20 ]
+            shMaxUpSum += data[ 21 ]
+            maxUpDiffSum += data[ 25 ]
+            
+            stUpSum += data[ 16 ]
+            szUpSum += data[ 22 ]
+            shUpSum += data[ 23 ]
+            upDiffSum += data[ 26 ]
+            
+        count = len( stDatas )
+        stMaxDownAvg = round( stMaxDownSum / count, 2 )
+        szMaxDownAvg = round( szMaxDownSum / count, 2 )
+        shMaxDownAvg = round( shMaxDownSum / count, 2 )
+        maxDownDiffAvg = round( maxDownDiffSum / count, 2 )
+        
+        stMaxUpAvg = round( stMaxUpSum / count, 2 )
+        szMaxUpAvg = round( szMaxUpSum / count, 2 )
+        shMaxUpAvg = round( shMaxUpSum / count, 2 )
+        maxUpDiffAvg = round( maxUpDiffSum / count, 2 )
+        
+        stUpAvg = round( stUpSum / count, 2 )
+        szUpAvg = round( szUpSum / count, 2 )
+        shUpAvg = round( shUpSum / count, 2 )
+        upDiffAvg = round( upDiffSum / count, 2 )
+        
+        return [ stMaxDownAvg, szMaxDownAvg, shMaxDownAvg, maxDownDiffAvg, stMaxUpAvg,
+                    szMaxUpAvg, shMaxUpAvg, maxUpDiffAvg, stUpAvg, szUpAvg, shUpAvg, upDiffAvg ]
+        
+        
+    '''
+    @summary: 计算各统计项的最大和最小值
+    
+    @param datas: 数据集合
+    
+    @return: 各统计项的最大和最小值
+    '''
+    def getMaxAndMin( self, datas ):
+        endIndex = len( datas ) - 1
+        
+        maxDownSort = sorted( datas, key=lambda data : data[ 5 ] )
+        maxDownMin = maxDownSort[ 0 ][ 5 ]
+        maxDownMax = maxDownSort[ endIndex ][ 5 ]
+        
+        szMaxDownSort = sorted( datas, key=lambda data : data[ 18 ] )
+        szMaxDownMin = szMaxDownSort[ 0 ][ 18 ]
+        szMaxDownMax = szMaxDownSort[ endIndex ][ 18 ]
+        
+        shMaxDownSort = sorted( datas, key=lambda data : data[ 19 ] )
+        shMaxDownMin = shMaxDownSort[ 0 ][ 19 ]
+        shMaxDownMax = shMaxDownSort[ endIndex ][ 19 ]
+        
+        maxDownDiffSort = sorted( datas, key=lambda data : data[ 24 ] )
+        maxDownDiffMin = maxDownDiffSort[ 0 ][ 24 ]
+        maxDownDiffMax = maxDownDiffSort[ endIndex ][ 24 ]
+        
+        maxUpSort = sorted( datas, key=lambda data : data[ 7 ] )
+        maxUpMin = maxUpSort[ 0 ][ 7 ]
+        maxUpMax = maxUpSort[ endIndex ][ 7 ]
+        
+        szMaxUpSort = sorted( datas, key=lambda data : data[ 20 ] )
+        szMaxUpMin = szMaxUpSort[ 0 ][ 20 ]
+        szMaxUpMax = szMaxUpSort[ endIndex ][ 20 ]
+        
+        shMaxUpSort = sorted( datas, key=lambda data : data[ 21 ] )
+        shMaxUpMin = shMaxUpSort[ 0 ][ 21 ]
+        shMaxUpMax = shMaxUpSort[ endIndex ][ 21 ]
+        
+        maxUpDiffSort = sorted( datas, key=lambda data : data[ 25 ] )
+        maxUpDiffMin = maxUpDiffSort[ 0 ][ 25 ]
+        maxUpDiffMax = maxUpDiffSort[ endIndex ][ 25 ]
+        
+        upSort = sorted( datas, key=lambda data : data[ 16 ] )
+        upMin = upSort[ 0 ][ 16 ]
+        upMax = upSort[ endIndex ][ 16 ]
+        
+        szUpSort = sorted( datas, key=lambda data : data[ 22 ] )
+        szUpMin = szUpSort[ 0 ][ 22 ]
+        szUpMax = szUpSort[ endIndex ][ 22]
+        
+        shUpSort = sorted( datas, key=lambda data : data[ 23 ] )
+        shUpMin = shUpSort[ 0 ][ 23 ]
+        shUpMax = shUpSort[ endIndex ][ 23 ]
+        
+        upDiffSort = sorted( datas, key=lambda data : data[ 26 ] )
+        upDiffMin = upDiffSort[ 0 ][ 26 ]
+        upDiffMax = upDiffSort[ endIndex ][ 26 ]
+        
+        minColl = [ maxDownMin, szMaxDownMin, shMaxDownMin, maxDownDiffMin, maxUpMin, szMaxUpMin, shMaxUpMin, maxUpDiffMin, upMin, szUpMin, shUpMin, upDiffMin ]
+        maxColl = [ maxDownMax, szMaxDownMax, shMaxDownMax, maxDownDiffMax, maxUpMax, szMaxUpMax, shMaxUpMax, maxUpDiffMax, upMax, szUpMax, shUpMax, upDiffMax ]
+        
+        return ( minColl, maxColl )
+    
+    
+    '''
+    @summary: 计算小于零的差值占的百分比
+    
+    @param datas: 数据集合
+    
+    @return: 小于零的差值占的百分比
+    '''
+    def getDiffPre( self, datas ):
+        count = len( datas )
+        
+        maxDownDiffSum = 0
+        maxUpDiffSum = 0
+        UpDiffSum = 0
+        
+        for data in datas:
+            if data[ 24 ] <= 0.0:
+                maxDownDiffSum += 1
+                
+            if data[ 25 ] <= 0.0:
+                maxUpDiffSum += 1
+                
+            if data[ 26 ] <= 0.0:
+                UpDiffSum += 1
+                
+        maxDownDiffPre = round( maxDownDiffSum / count * 100, 2 )
+        maxUpDiffPre = round( maxUpDiffSum / count * 100, 2 )
+        UpDiffPre = round( UpDiffSum / count * 100, 2 )
+        
+        return [ maxDownDiffPre, maxUpDiffPre, UpDiffPre  ]
+                
+            
     '''
     @summary: 删除带有纯ST股票代码数据
     '''

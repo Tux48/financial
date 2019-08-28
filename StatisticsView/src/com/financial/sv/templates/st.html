@@ -4,20 +4,425 @@
 	<meta charset="UTF-8">
 	<title>ST统计</title>
 	<style>
-	.cursor {
-		cursor: pointer;
-	} /*鼠标移动到标题上显示小手*/
+		.cursor {
+			cursor: pointer;
+		} /*鼠标移动到标题上显示小手*/
 	</style>
-
+	
 	<script>
+	
+		var stMaxDownAvg = {{ datas[ 1 ][ 0 ] }}
+		var szMaxDownAvg = {{ datas[ 1 ][ 1 ] }}
+		var shMaxDownAvg = {{ datas[ 1 ][ 2 ] }}
+		var maxDownDiffAvg = {{ datas[ 1 ][ 3 ] }}
+		
+		var stMaxUpAvg = {{ datas[ 1 ][ 4 ] }}
+		var szMaxUpAvg = {{ datas[ 1 ][ 5 ] }}
+		var shMaxUpAvg = {{ datas[ 1 ][ 6 ] }}
+		var maxUpDiffAvg = {{ datas[ 1 ][ 7 ] }}
+		
+		var stUpAvg = {{ datas[ 1 ][ 8 ] }}
+		var szUpAvg = {{ datas[ 1 ][ 9 ] }}
+		var shUpAvg = {{ datas[ 1 ][ 10 ] }}
+		var upDiffAvg = {{ datas[ 1 ][ 11 ] }}
+		
+		function insertAvg( table ) {
+			var len = table.rows.length
+			var row = table.insertRow( len );
+			
+		    var cell1 = row.insertCell( 0 );
+		    var cell2 = row.insertCell( 1 );
+		    var cell3 = row.insertCell( 2 );
+		    var cell4 = row.insertCell( 3 );
+		    var cell5 = row.insertCell( 4 );
+		    var cell6 = row.insertCell( 5 );
+		    var cell7 = row.insertCell( 6 );
+		    var cell8 = row.insertCell( 7 );
+		    var cell9 = row.insertCell( 8 );
+		    var cell10 = row.insertCell( 9 );
+		    var cell11 = row.insertCell( 10 );
+		    var cell12 = row.insertCell( 11 );
+		    var cell13 = row.insertCell( 12 );
+		    var cell14 = row.insertCell( 13 );
+		    var cell15 = row.insertCell( 14 );
+		    var cell16 = row.insertCell( 15 );
+		    var cell17 = row.insertCell( 16 );
+		    var cell18 = row.insertCell( 17 );
+		    var cell19 = row.insertCell( 18 );
+		    var cell20 = row.insertCell( 19 );
+		    var cell21 = row.insertCell( 20 );
+		    var cell22 = row.insertCell( 21 );
+		    var cell23 = row.insertCell( 22 );
+		    var cell24 = row.insertCell( 23 );
+		    var cell25 = row.insertCell( 24 );
+		    var cell26 = row.insertCell( 25 );
+		    var cell27 = row.insertCell( 26 );
+		    
+		    cell1.innerHTML = "汇总";
+		    cell1.style.fontSize = "14px";
+		    cell1.align = "center";
+		    cell2.innerHTML = " ";
+		    cell3.innerHTML = " ";
+		    cell4.innerHTML = " ";
+		    cell5.innerHTML = " ";
+		    cell6.innerHTML = " ";
+		    cell7.innerHTML= stMaxDownAvg + "%";
+		    cell7.style.fontSize = "14px";
+		    cell7.align = "center";
+		    cell8.innerHTML = szMaxDownAvg + "%";
+		    cell8.style.fontSize = "14px";
+		    cell8.align = "center";
+		    cell9.innerHTML = shMaxDownAvg + "%";
+		    cell9.style.fontSize = "14px";
+		    cell9.align = "center";
+		    cell10.innerHTML = maxDownDiffAvg + "%";
+		    cell10.style.fontSize = "14px";
+		    cell10.align = "center";
+		    cell11.innerHTML = " ";
+		    cell12.innerHTML = " ";
+		    cell13.innerHTML = stMaxUpAvg + "%";
+		    cell13.style.fontSize = "14px";
+		    cell13.align = "center";
+		    cell14.innerHTML = szMaxUpAvg + "%";
+		    cell14.style.fontSize = "14px";
+		    cell14.align = "center";
+		    cell15.innerHTML = shMaxUpAvg + "%";
+		    cell15.style.fontSize = "14px";
+		    cell15.align = "center";
+		    cell16.innerHTML = maxUpDiffAvg + "%";
+		    cell16.style.fontSize = "14px";
+		    cell16.align = "center";
+		    cell17.innerHTML = " ";
+		    cell18.innerHTML = stUpAvg + "%";
+		    cell18.style.fontSize = "14px";
+		    cell18.align = "center";
+		    cell19.innerHTML = szUpAvg + "%";
+		    cell19.style.fontSize = "14px";
+		    cell19.align = "center";
+		    cell20.innerHTML = shUpAvg + "%";
+		    cell20.style.fontSize = "14px";
+		    cell20.align = "center";
+		    cell21.innerHTML = upDiffAvg + "%";
+		    cell21.style.fontSize = "14px";
+		    cell21.align = "center";
+		    cell22.innerHTML = " ";
+		    cell23.innerHTML = " ";
+		    cell24.innerHTML = " ";
+		    cell25.innerHTML = " ";
+		    cell26.innerHTML = " ";
+		    cell27.innerHTML = " ";
+		}
+		
+		var stMaxDownMin = {{ datas[ 2 ][ 0 ] }}
+		var szMaxDownMin = {{ datas[ 2 ][ 1 ] }}
+		var shMaxDownMin = {{ datas[ 2 ][ 2 ] }}
+		var maxDownDiffMin = {{ datas[ 2 ][ 3 ] }}
+		
+		var stMaxUpMin = {{ datas[ 2 ][ 4 ] }}
+		var szMaxUpMin = {{ datas[ 2 ][ 5 ] }}
+		var shMaxUpMin = {{ datas[ 2 ][ 6 ] }}
+		var maxUpDiffMin = {{ datas[ 2 ][ 7 ] }}
+		
+		var stUpMin = {{ datas[ 2 ][ 8 ] }}
+		var szUpMin = {{ datas[ 2 ][ 9 ] }}
+		var shUpMin = {{ datas[ 2 ][ 10 ] }}
+		var upDiffMin = {{ datas[ 2 ][ 11 ] }}
+		
+		function insertMin( table ) {
+			var len = table.rows.length
+			var row = table.insertRow( len );
+			
+		    var cell1 = row.insertCell( 0 );
+		    var cell2 = row.insertCell( 1 );
+		    var cell3 = row.insertCell( 2 );
+		    var cell4 = row.insertCell( 3 );
+		    var cell5 = row.insertCell( 4 );
+		    var cell6 = row.insertCell( 5 );
+		    var cell7 = row.insertCell( 6 );
+		    var cell8 = row.insertCell( 7 );
+		    var cell9 = row.insertCell( 8 );
+		    var cell10 = row.insertCell( 9 );
+		    var cell11 = row.insertCell( 10 );
+		    var cell12 = row.insertCell( 11 );
+		    var cell13 = row.insertCell( 12 );
+		    var cell14 = row.insertCell( 13 );
+		    var cell15 = row.insertCell( 14 );
+		    var cell16 = row.insertCell( 15 );
+		    var cell17 = row.insertCell( 16 );
+		    var cell18 = row.insertCell( 17 );
+		    var cell19 = row.insertCell( 18 );
+		    var cell20 = row.insertCell( 19 );
+		    var cell21 = row.insertCell( 20 );
+		    var cell22 = row.insertCell( 21 );
+		    var cell23 = row.insertCell( 22 );
+		    var cell24 = row.insertCell( 23 );
+		    var cell25 = row.insertCell( 24 );
+		    var cell26 = row.insertCell( 25 );
+		    var cell27 = row.insertCell( 26 );
+		    
+		    cell1.innerHTML = "最小";
+		    cell1.style.fontSize = "14px";
+		    cell1.align = "center";
+		    cell2.innerHTML = " ";
+		    cell3.innerHTML = " ";
+		    cell4.innerHTML = " ";
+		    cell5.innerHTML = " ";
+		    cell6.innerHTML = " ";
+		    cell7.innerHTML= stMaxDownMin + "%";
+		    cell7.style.fontSize = "14px";
+		    cell7.align = "center";
+		    cell8.innerHTML = szMaxDownMin + "%";
+		    cell8.style.fontSize = "14px";
+		    cell8.align = "center";
+		    cell9.innerHTML = shMaxDownMin + "%";
+		    cell9.style.fontSize = "14px";
+		    cell9.align = "center";
+		    cell10.innerHTML = maxDownDiffMin + "%";
+		    cell10.style.fontSize = "14px";
+		    cell10.align = "center";
+		    cell11.innerHTML = " ";
+		    cell12.innerHTML = " ";
+		    cell13.innerHTML = stMaxUpMin + "%";
+		    cell13.style.fontSize = "14px";
+		    cell13.align = "center";
+		    cell14.innerHTML = szMaxUpMin + "%";
+		    cell14.style.fontSize = "14px";
+		    cell14.align = "center";
+		    cell15.innerHTML = shMaxUpMin + "%";
+		    cell15.style.fontSize = "14px";
+		    cell15.align = "center";
+		    cell16.innerHTML = maxUpDiffMin + "%";
+		    cell16.style.fontSize = "14px";
+		    cell16.align = "center";
+		    cell17.innerHTML = " ";
+		    cell18.innerHTML = stUpMin + "%";
+		    cell18.style.fontSize = "14px";
+		    cell18.align = "center";
+		    cell19.innerHTML = szUpMin + "%";
+		    cell19.style.fontSize = "14px";
+		    cell19.align = "center";
+		    cell20.innerHTML = shUpMin + "%";
+		    cell20.style.fontSize = "14px";
+		    cell20.align = "center";
+		    cell21.innerHTML = upDiffMin + "%";
+		    cell21.style.fontSize = "14px";
+		    cell21.align = "center";
+		    cell22.innerHTML = " ";
+		    cell23.innerHTML = " ";
+		    cell24.innerHTML = " ";
+		    cell25.innerHTML = " ";
+		    cell26.innerHTML = " ";
+		    cell27.innerHTML = " ";
+		}
+		
+		var stMaxDownMax = {{ datas[ 3 ][ 0 ] }}
+		var szMaxDownMax = {{ datas[ 3 ][ 1 ] }}
+		var shMaxDownMax = {{ datas[ 3 ][ 2 ] }}
+		var maxDownDiffMax = {{ datas[ 3 ][ 3 ] }}
+		
+		var stMaxUpMax = {{ datas[ 3 ][ 4 ] }}
+		var szMaxUpMax = {{ datas[ 3 ][ 5 ] }}
+		var shMaxUpMax = {{ datas[ 3 ][ 6 ] }}
+		var maxUpDiffMax = {{ datas[ 3 ][ 7 ] }}
+		
+		var stUpMax = {{ datas[ 3 ][ 8 ] }}
+		var szUpMax = {{ datas[ 3 ][ 9 ] }}
+		var shUpMax = {{ datas[ 3 ][ 10 ] }}
+		var upDiffMax = {{ datas[ 3 ][ 11 ] }}
+		
+		function insertMax( table ) {
+			var len = table.rows.length
+			var row = table.insertRow( len );
+			
+		    var cell1 = row.insertCell( 0 );
+		    var cell2 = row.insertCell( 1 );
+		    var cell3 = row.insertCell( 2 );
+		    var cell4 = row.insertCell( 3 );
+		    var cell5 = row.insertCell( 4 );
+		    var cell6 = row.insertCell( 5 );
+		    var cell7 = row.insertCell( 6 );
+		    var cell8 = row.insertCell( 7 );
+		    var cell9 = row.insertCell( 8 );
+		    var cell10 = row.insertCell( 9 );
+		    var cell11 = row.insertCell( 10 );
+		    var cell12 = row.insertCell( 11 );
+		    var cell13 = row.insertCell( 12 );
+		    var cell14 = row.insertCell( 13 );
+		    var cell15 = row.insertCell( 14 );
+		    var cell16 = row.insertCell( 15 );
+		    var cell17 = row.insertCell( 16 );
+		    var cell18 = row.insertCell( 17 );
+		    var cell19 = row.insertCell( 18 );
+		    var cell20 = row.insertCell( 19 );
+		    var cell21 = row.insertCell( 20 );
+		    var cell22 = row.insertCell( 21 );
+		    var cell23 = row.insertCell( 22 );
+		    var cell24 = row.insertCell( 23 );
+		    var cell25 = row.insertCell( 24 );
+		    var cell26 = row.insertCell( 25 );
+		    var cell27 = row.insertCell( 26 );
+		    
+		    cell1.innerHTML = "最大";
+		    cell1.style.fontSize = "14px";
+		    cell1.align = "center";
+		    cell2.innerHTML = " ";
+		    cell3.innerHTML = " ";
+		    cell4.innerHTML = " ";
+		    cell5.innerHTML = " ";
+		    cell6.innerHTML = " ";
+		    cell7.innerHTML= stMaxDownMax + "%";
+		    cell7.style.fontSize = "14px";
+		    cell7.align = "center";
+		    cell8.innerHTML = szMaxDownMax + "%";
+		    cell8.style.fontSize = "14px";
+		    cell8.align = "center";
+		    cell9.innerHTML = shMaxDownMax + "%";
+		    cell9.style.fontSize = "14px";
+		    cell9.align = "center";
+		    cell10.innerHTML = maxDownDiffMax + "%";
+		    cell10.style.fontSize = "14px";
+		    cell10.align = "center";
+		    cell11.innerHTML = " ";
+		    cell12.innerHTML = " ";
+		    cell13.innerHTML = stMaxUpMax + "%";
+		    cell13.style.fontSize = "14px";
+		    cell13.align = "center";
+		    cell14.innerHTML = szMaxUpMax + "%";
+		    cell14.style.fontSize = "14px";
+		    cell14.align = "center";
+		    cell15.innerHTML = shMaxUpMax + "%";
+		    cell15.style.fontSize = "14px";
+		    cell15.align = "center";
+		    cell16.innerHTML = maxUpDiffMax + "%";
+		    cell16.style.fontSize = "14px";
+		    cell16.align = "center";
+		    cell17.innerHTML = " ";
+		    cell18.innerHTML = stUpMax + "%";
+		    cell18.style.fontSize = "14px";
+		    cell18.align = "center";
+		    cell19.innerHTML = szUpMax + "%";
+		    cell19.style.fontSize = "14px";
+		    cell19.align = "center";
+		    cell20.innerHTML = shUpMax + "%";
+		    cell20.style.fontSize = "14px";
+		    cell20.align = "center";
+		    cell21.innerHTML = upDiffMax + "%";
+		    cell21.style.fontSize = "14px";
+		    cell21.align = "center";
+		    cell22.innerHTML = " ";
+		    cell23.innerHTML = " ";
+		    cell24.innerHTML = " ";
+		    cell25.innerHTML = " ";
+		    cell26.innerHTML = " ";
+		    cell27.innerHTML = " ";
+		}
+		
+		var maxDownDiff = {{ datas[ 4 ][ 0 ] }}
+		var maxUpDiff = {{ datas[ 4 ][ 1 ] }}
+		var upDiff = {{ datas[ 4 ][ 2 ] }}
+		
+		function insertDiff( table ) {
+			var len = table.rows.length
+			var row = table.insertRow( len );
+			
+		    var cell1 = row.insertCell( 0 );
+		    var cell2 = row.insertCell( 1 );
+		    var cell3 = row.insertCell( 2 );
+		    var cell4 = row.insertCell( 3 );
+		    var cell5 = row.insertCell( 4 );
+		    var cell6 = row.insertCell( 5 );
+		    var cell7 = row.insertCell( 6 );
+		    var cell8 = row.insertCell( 7 );
+		    var cell9 = row.insertCell( 8 );
+		    var cell10 = row.insertCell( 9 );
+		    var cell11 = row.insertCell( 10 );
+		    var cell12 = row.insertCell( 11 );
+		    var cell13 = row.insertCell( 12 );
+		    var cell14 = row.insertCell( 13 );
+		    var cell15 = row.insertCell( 14 );
+		    var cell16 = row.insertCell( 15 );
+		    var cell17 = row.insertCell( 16 );
+		    var cell18 = row.insertCell( 17 );
+		    var cell19 = row.insertCell( 18 );
+		    var cell20 = row.insertCell( 19 );
+		    var cell21 = row.insertCell( 20 );
+		    var cell22 = row.insertCell( 21 );
+		    var cell23 = row.insertCell( 22 );
+		    var cell24 = row.insertCell( 23 );
+		    var cell25 = row.insertCell( 24 );
+		    var cell26 = row.insertCell( 25 );
+		    var cell27 = row.insertCell( 26 );
+		    
+		    cell1.innerHTML = "<=0 %";
+		    cell1.style.fontSize = "14px";
+		    cell1.align = "center";
+		    cell2.innerHTML = " ";
+		    cell3.innerHTML = " ";
+		    cell4.innerHTML = " ";
+		    cell5.innerHTML = " ";
+		    cell6.innerHTML = " ";
+		    cell7.innerHTML= " ";
+		    cell7.style.fontSize = "14px";
+		    cell7.align = "center";
+		    cell8.innerHTML = " ";
+		    cell8.style.fontSize = "14px";
+		    cell8.align = "center";
+		    cell9.innerHTML = " ";
+		    cell9.style.fontSize = "14px";
+		    cell9.align = "center";
+		    cell10.innerHTML = maxDownDiff + "%";
+		    cell10.style.fontSize = "14px";
+		    cell10.align = "center";
+		    cell11.innerHTML = " ";
+		    cell12.innerHTML = " ";
+		    cell13.innerHTML = " ";
+		    cell13.style.fontSize = "14px";
+		    cell13.align = "center";
+		    cell14.innerHTML = " ";
+		    cell14.style.fontSize = "14px";
+		    cell14.align = "center";
+		    cell15.innerHTML = " ";
+		    cell15.style.fontSize = "14px";
+		    cell15.align = "center";
+		    cell16.innerHTML = maxUpDiff + "%";
+		    cell16.style.fontSize = "14px";
+		    cell16.align = "center";
+		    cell17.innerHTML = " ";
+		    cell18.innerHTML = " ";
+		    cell18.style.fontSize = "14px";
+		    cell18.align = "center";
+		    cell19.innerHTML = " ";
+		    cell19.style.fontSize = "14px";
+		    cell19.align = "center";
+		    cell20.innerHTML = " ";
+		    cell20.style.fontSize = "14px";
+		    cell20.align = "center";
+		    cell21.innerHTML = upDiff + "%";
+		    cell21.style.fontSize = "14px";
+		    cell21.align = "center";
+		    cell22.innerHTML = " ";
+		    cell23.innerHTML = " ";
+		    cell24.innerHTML = " ";
+		    cell25.innerHTML = " ";
+		    cell26.innerHTML = " ";
+		    cell27.innerHTML = " ";
+		}
+		
 		//查找表格的<th>元素，让它们可单击
 		function makeSortable(table) {
 			var headers = table.getElementsByTagName("th");
 			for (var i = 0; i < headers.length; i++) {
 				(function(n) {
+					
 					var flag = false;
 					headers[n].onclick = function() {
 						// sortrows(table,n);
+						len = table.rows.length
+						table.deleteRow( len - 1 )
+						table.deleteRow( len - 2 )
+						table.deleteRow( len - 3 )
+						table.deleteRow( len - 4 )
+						
 						var tbody = table.tBodies[0];//第一个<tbody>
 						var rows = tbody.getElementsByTagName("tr");//tbody中的所有行
 						rows = Array.prototype.slice.call(rows, 0);//真实数组中的快照
@@ -51,14 +456,24 @@
 						}
 	
 						flag = !flag;
+						insertAvg( table )
+						insertMin( table )
+						insertMax( table )
+						insertDiff( table )
 					}
 				}(i));
 			}
 		}
 	
 		window.onload = function() {
-			var table = document.getElementsByTagName("table")[0];
-			makeSortable(table);
+			//var table = document.getElementsByTagName("table")[0];
+			var table = document.getElementById("table1");
+			
+			insertAvg( table )
+			insertMin( table )
+			insertMax( table )
+			insertDiff( table )
+		    makeSortable(table);
 		}
 	</script>
 
@@ -101,7 +516,7 @@
 	<font size=3>ST期间涨幅: 涨幅</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<br>
 	<br>
-	<table width="100%">
+	<table width="100%" id="table1" border="1"  cellspacing="0" cellpadding="0" bordercolor="#000000" style="BORDER-COLLAPSE: collapse">
 		<thead>
 			<tr style="height: 30px">
 				<th align="center" style="font-size:12px;">代码</th>
@@ -111,17 +526,20 @@
 				<th align="center" style="font-size:12px;" class="cursor">起始价</th>
 				<th align="center" style="font-size:12px;" class="cursor">最低价</th>
 				<th align="center" style="font-size:12px;" class="cursor">最大跌幅(%)</th>
-				<th align="center" style="font-size:12px;" class="cursor">深最大跌幅(%)</th>
-				<th align="center" style="font-size:12px;" class="cursor">上最大跌幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">深最大跌(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">上最大跌(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">差值(%)</th>
 				<th align="center" style="font-size:12px;" class="cursor">时长(天)</th>
 				<th align="center" style="font-size:12px;" class="cursor">最高价</th>
 				<th align="center" style="font-size:12px;" class="cursor">最大涨幅(%)</th>
-				<th align="center" style="font-size:12px;" class="cursor">深最大涨幅(%)</th>
-				<th align="center" style="font-size:12px;" class="cursor">上最大涨幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">深最大涨(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">上最大涨(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">差值(%)</th>
 				<th align="center" style="font-size:12px;" class="cursor">收盘价</th>
 				<th align="center" style="font-size:12px;" class="cursor">涨幅(%)</th>
-				<th align="center" style="font-size:12px;" class="cursor">深涨幅(%)</th>
-				<th align="center" style="font-size:12px;" class="cursor">上涨幅(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">深涨(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">上涨(%)</th>
+				<th align="center" style="font-size:12px;" class="cursor">差值(%)</th>
 				<th align="center" style="font-size:12px;">撤销ST时间</th>
 				<th align="center" style="font-size:12px;" class="cursor">正最高价</th>
 				<th align="center" style="font-size:12px;" class="cursor">正最大涨幅(%)</th>
@@ -131,7 +549,7 @@
 			</tr>
 		</thead>
 		<tbody id="trPanel">
-			{% for data in datas %}
+			{% for data in datas[ 0 ] %}
 				<tr style="height: 30px">
 					<td align="center" style="font-size:12px;">{{ data[ 0 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 1 ] }}</td>
@@ -142,15 +560,18 @@
 					<td align="center" style="font-size:12px;">{{ data[ 5 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 18 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 19 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 24 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 8 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 6 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 7 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 20 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 21 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 25 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 10 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 16 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 22 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 23 ] }}</td>
+					<td align="center" style="font-size:12px;">{{ data[ 26 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 9 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 11 ] }}</td>
 					<td align="center" style="font-size:12px;">{{ data[ 12 ] }}</td>
@@ -161,5 +582,38 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	<!-- 
+	<table width="100%" id="table2">
+		<tr style="height: 30px">
+				<td align="center" style="font-size:12px;">汇总:</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">股票名称</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">20180814-201000</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">ST时长(天)</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">起始价</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">最低</td>
+				<td align="center" style="font-size:12px;">{{ datas[ 1 ][ 0 ]}}%</td>
+				<td align="center" style="font-size:12px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ datas[ 1 ][ 1 ]}}%</td>
+				<td align="center" style="font-size:12px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ datas[ 1 ][ 2 ]}}%</td>
+				<td align="center" style="font-size:12px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ datas[ 1 ][ 3 ]}}%</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">时长(天)</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">最高</td>
+				<td align="center" style="font-size:12px;">&nbsp;&nbsp;{{ datas[ 1 ][ 4 ]}}%</td>
+				<td align="center" style="font-size:12px;">&nbsp;&nbsp;&nbsp;{{ datas[ 1 ][ 5 ]}}%</td>
+				<td align="center" style="font-size:12px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ datas[ 1 ][ 6 ]}}%</td>
+				<td align="center" style="font-size:12px;">&nbsp;&nbsp;{{ datas[ 1 ][ 7 ]}}%</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">收&nbsp;</td>
+				<td align="center" style="font-size:12px;">&nbsp;&nbsp;{{ datas[ 1 ][ 8 ]}}%</td>
+				<td align="center" style="font-size:12px;">&nbsp;&nbsp;{{ datas[ 1 ][ 9 ]}}%</td>
+				<td align="center" style="font-size:12px;">{{ datas[ 1 ][ 10 ]}}%</td>
+				<td align="center" style="font-size:12px;">{{ datas[ 1 ][ 11 ]}}%</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">撤销ST时间</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">正最高价</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">正最大涨幅(%)</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">正最低价</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">正最大跌(%)</td>
+				<td align="center" style="font-size:12px;VISIBILITY:hidden;">历史最低</td>
+			</tr>
+	</table>
+	 -->
 </body>
 </html>

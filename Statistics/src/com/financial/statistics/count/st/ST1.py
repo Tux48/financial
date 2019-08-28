@@ -76,23 +76,29 @@ class ST:
                     # 深、沪指的涨跌幅数据
                     szIndexDatas = self.getIndexDatas( "SZ" )
                     szStMaxDown = self.getStMaxDown( stDateRange, szIndexDatas )
-                    szStMaxUp = self.getStMaxUp( stDateRange, szIndexDatas )
+#                     szStMaxUp = self.getStMaxUp( stDateRange, szIndexDatas )
                     szCancelStMaxUp = self.getCancelStMaxUp( cancleStDateRange, szIndexDatas )
                     szRiseExtent = self.countRiseExtent( szStMaxDown[ 0 ], szCancelStMaxUp[ 0 ] )
                     
+                    szIndexDownPre = self.getStIndexMaxDown( stDateRange, stockDatas, szIndexDatas)
+                    szIndexUpPre = self.getStIndexMaxUp( stDateRange, stockDatas, szIndexDatas )
+                    
                     shIndexDatas = self.getIndexDatas( "SH" )
                     shStMaxDown = self.getStMaxDown( stDateRange, shIndexDatas )
-                    shStMaxUp = self.getStMaxUp( stDateRange, shIndexDatas )
+#                     shStMaxUp = self.getStMaxUp( stDateRange, shIndexDatas )
                     shCancelStMaxUp = self.getCancelStMaxUp( cancleStDateRange, shIndexDatas )
                     shRiseExtent = self.countRiseExtent( shStMaxDown[ 0 ], shCancelStMaxUp[ 0 ] )
                     
-                    maxDownDifference = self.getStMaxDownDifference( stMaxDown[ 2 ], szStMaxDown[ 2 ], shStMaxDown[ 2 ] )
-                    maxUpDifference = self.getStMaxUpDifference( stMaxUp[ 1 ], szStMaxUp[ 1 ], shStMaxUp[ 1 ] )
+                    shIndexDownPre = self.getStIndexMaxDown( stDateRange, stockDatas, shIndexDatas )
+                    shIndexUpPre = self.getStIndexMaxUp( stDateRange, stockDatas, shIndexDatas )
+                    
+                    maxDownDifference = self.getStMaxDownDifference( stMaxDown[ 2 ], szIndexDownPre, shIndexDownPre )
+                    maxUpDifference = self.getStMaxUpDifference( stMaxUp[ 1 ], szIndexUpPre, shIndexUpPre )
                     upDifference = self.getStUpDifference( stRiseExtent, szRiseExtent, shRiseExtent )
                     
                     dataResult.append( [ code, stockName, stDate, stMaxDown[ 0 ], stMaxDown[ 1 ], stMaxDown[ 2 ], stMaxUp[ 0 ], stMaxUp[ 1 ], stDuration, 
                                         cancleStDate, cancelStMaxUp[ 0 ], cancelStMaxUp[ 1 ], cancelStMaxUp[ 2 ], cancelStMaxDown[ 0 ], cancelStMaxDown[ 1 ], isHistoryLowest,
-                                        stRiseExtent, stDaysDifference, szStMaxDown[ 2 ], shStMaxDown[ 2 ], szStMaxUp[ 1 ], shStMaxUp[ 1 ], szRiseExtent, shRiseExtent,
+                                        stRiseExtent, stDaysDifference, szIndexDownPre, shIndexDownPre, szIndexUpPre, shIndexUpPre, szRiseExtent, shRiseExtent,
                                         maxDownDifference, maxUpDifference, upDifference ] )
 
         stBeans = self.transformStatisticsBean( dataResult, stType )
@@ -277,6 +283,50 @@ class ST:
 #         
         return [ preClose, stMinLow, stMaxDownPercent ]
 #         return stMaxDownPercent
+
+    '''
+    @summary: 返回新算法的指数最大跌幅计算值
+    '''
+    def getStIndexMaxDown( self, stDateRange, stockDatas, indexDatas  ):
+        
+        stStartDate = stDateRange[ 0 ]
+        stEndDate = stDateRange[ 1 ]
+        
+        preClose = None # 昨收价
+        stLow = 1000.0  # st期间股票最低价
+        stLowDate = None    # st期间股票最低价时间
+        
+        for data in stockDatas:
+            tradeDate = data[ 0 ]
+    
+            if tradeDate >= stStartDate  and tradeDate <= stEndDate:
+#                 if preClose == None:
+#                     preClose = data[ 4 ]
+#                     
+                low = data[ 2 ]
+                if low < stLow:
+                    stLowDate = tradeDate
+                    stLow = low
+                    
+            if tradeDate >= stEndDate:
+                break;
+            
+        indexLow = 0.0  # 指数最低价
+        for data in indexDatas:
+            tradeDate = data[ 0 ]
+    
+            if tradeDate >= stStartDate  and tradeDate <= stEndDate:
+            
+                if preClose == None:
+                        preClose = data[ 4 ]
+                        
+                if tradeDate == stLowDate:
+                    indexLow = data[ 2 ]
+                    break;
+                
+        indexDownPercent = round( ( preClose - indexLow ) / preClose * 100, 2 )
+         
+        return indexDownPercent
         
     
     '''
@@ -317,7 +367,91 @@ class ST:
         stMaxUpPercent = round( ( stMaxHigh - stMinLow ) / stMinLow * 100, 2 )
          
         return [ stMaxHigh, stMaxUpPercent ]
-#         return stMaxUpPercent
+#         return stMaxUpPercentdef getStMaxUp( self, stDateRange, datas ):
+        
+#         stStartDate = stDateRange[ 0 ]
+#         stEndDate = stDateRange[ 1 ]
+#         stStockDatas = []
+#         
+#         stMinLow = 100000.0
+#         minLowDate = None
+#         
+#         for stock in datas:
+#             tradeDate = stock[ 0 ]
+#             if tradeDate >= stStartDate  and tradeDate <= stEndDate:
+#                 stStockDatas.append( stock )
+#                 
+#                 if stock[ 2 ] < stMinLow:
+#                     stMinLow = stock[ 2 ]
+#                     minLowDate = tradeDate
+#                 
+#             if tradeDate >= stEndDate:
+#                 break
+#         
+#         stMaxHigh = 0.01
+#         
+#         for stock in stStockDatas:
+#             tradeDate = stock[ 0 ]
+#             if tradeDate >= minLowDate  and tradeDate <= stEndDate and stock[ 1 ] > stMaxHigh:
+#                 stMaxHigh = stock[ 1 ]
+#                 
+#             if tradeDate >= stEndDate:
+#                 break;
+#          
+#         stMaxUpPercent = round( ( stMaxHigh - stMinLow ) / stMinLow * 100, 2 )
+#          
+#         return [ stMaxHigh, stMaxUpPercent ]
+    
+    
+    '''
+    @summary: 返回新算法的指数最大涨幅计算值
+    '''
+    def getStIndexMaxUp( self, stDateRange, stockDatas, indexDatas ):
+        
+        stStartDate = stDateRange[ 0 ]
+        stEndDate = stDateRange[ 1 ]
+        
+        stMinLow = 100000.0
+        stLowDate = None
+        
+        stMaxHigh = 0.01
+        stHighDate = None
+        
+        for stock in stockDatas:
+            tradeDate = stock[ 0 ]
+            if tradeDate >= stStartDate  and tradeDate <= stEndDate:
+                
+                if stock[ 2 ] < stMinLow:
+                    stMinLow = stock[ 2 ]
+                    stLowDate = tradeDate
+                    
+                if stock[ 1 ] > stMaxHigh:
+                    stMaxHigh = stock[ 1 ]
+                    stHighDate = tradeDate
+                
+            if tradeDate >= stEndDate:
+                break
+        
+        indexLow = 0.0
+        indexHigh = 0.0
+        for data in indexDatas:
+            tradeDate = data[ 0 ]
+            high = data[ 1 ]
+            low = data[ 2 ]
+            
+            if tradeDate == stLowDate:
+                indexLow = low
+                
+            if tradeDate == stHighDate:
+                indexHigh = high
+                
+            if tradeDate >= stEndDate:
+                break
+                
+            
+        indexUpPercent = round( ( indexHigh - indexLow ) / indexLow * 100, 2 )
+         
+        return indexUpPercent
     
     
     '''

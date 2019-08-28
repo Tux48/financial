@@ -31,8 +31,11 @@ class StService:
     def getStStatistics( self ):
         SQL = StUtil().buildStStatisticsSQL( NO_STAR_ST_TYPE )
         datas = StatisticsDao().getStStatisticsDatas( SQL )
+        avg = StUtil().getAverage( datas )
+        ( minColl, maxColl ) = StUtil().getMaxAndMin( datas )
+        diffPre = StUtil().getDiffPre( datas )
         
-        return json.dumps( datas )
+        return json.dumps( [ datas, avg, minColl, maxColl, diffPre ] )
     
     
     '''
@@ -41,5 +44,8 @@ class StService:
     def getStarStStatistics( self ):
         SQL = StUtil().buildStStatisticsSQL( STAR_ST_TYPE )
         datas = StatisticsDao().getStStatisticsDatas( SQL )
+        avg = StUtil().getAverage( datas )
+        ( minColl, maxColl ) = StUtil().getMaxAndMin( datas )
+        diffPre = StUtil().getDiffPre( datas )
         
-        return json.dumps( datas )
+        return json.dumps( [ datas, avg, minColl, maxColl, diffPre ] )

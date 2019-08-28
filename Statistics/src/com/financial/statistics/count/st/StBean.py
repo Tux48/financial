@@ -105,3 +105,13 @@ class StBean( Base ):
     
     ## st期间的沪指涨幅
     shUp = Column( Float, name = "sh_up", nullable = False )
+    
+    
+    # st最大涨幅差值
+    maxDownDifference = Column( Float, name = "max_down_diff", nullable = False )
+    
+    # st最大涨幅差值
+    maxUpDifference = Column( Float, name = "max_up_diff", nullable = False )
+    
+    # st涨幅差值
+    upDifference = Column( Float, name = "up_diff", nullable = False )

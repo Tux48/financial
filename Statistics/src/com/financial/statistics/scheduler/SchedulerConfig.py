@@ -26,9 +26,9 @@ class SchedulerJobConfig(object):
             'args': None,
             'trigger': {
                 'type': 'cron',
-                'day_of_week':"mon-fri",
-                'hour': '16',
-                'minute': '47'
+                'day_of_week':"mon-sun",
+                'hour': '14',
+                'minute': '38'
             }
         }
     ]

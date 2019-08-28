@@ -21,8 +21,8 @@ It defines classes_and_methods
 from com.financial.statistics.count.st.StarST import StarST
 from com.financial.statistics.count.st.OnlyST import OnlyST
 from com.financial.statistics.log.StatisticsLog import StatisticsLog
-# from com.financial.statistics.count.st.FinancialDao import FinancialDao
-from com.financial.statistics.count.st.NameChangeLoad import NameChangeLoad
+from com.financial.statistics.count.st.FinancialDao import FinancialDao
+# from com.financial.statistics.count.st.NameChangeLoad import NameChangeLoad
 
 from com.financial.statistics.scheduler import scheduler
 
@@ -30,8 +30,8 @@ def stStatistics():
     with scheduler.app.app_context():
         
         try:
-#             datas = FinancialDao().getAllNameChangeDatas()
-            datas = NameChangeLoad().load()
+            datas = FinancialDao().getAllNameChangeDatas()
+#             datas = NameChangeLoad().load()
             OnlyST().stCount( datas )
             StarST().starStCount( datas )
         except Exception as err:

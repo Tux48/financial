@@ -26,14 +26,8 @@ sv = Blueprint( "sv", __name__ )
 
 @sv.route( "/st" )
 def st():
-#     stStatistics = StService().getStStatistics()
-#     return render_template( "st.html", datas = stStatistics )
-
     return StService().getStStatistics()
 
 @sv.route( "/star_st" )
 def starSt():
-#     starStStatistics = StService().getStarStStatistics()
-#     return render_template( "st.html", datas = starStStatistics )
-
     return StService().getStarStStatistics()
