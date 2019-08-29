@@ -20,7 +20,7 @@ from com.financial.common.cfg.BaseConfig import BaseConfig
 class CommonConfig( BaseConfig ):
     
     ## 配置文件所有位置，放到Linux机器上需要改路径
-    configFilePath = "D:\\Projects\\financial\\common\\config\\common.config"
+    configFilePath = "/Tux48/projects/financial/Common/config/common.config"
     
     def __init__(self):
         super( CommonConfig, self ).__init__( self.configFilePath )
