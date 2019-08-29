@@ -61,6 +61,6 @@ class ReinstatedAPI:
     '''
     def getReinstatedDatas( self, stockCode, adj, startDate, endDate ):
         api = TushareAPI().getTushareAPI()
-        data = ts.pro_bar( pro_api=api, ts_code= stockCode, adj=adj, start_date = startDate, end_date = endDate )
+        data = ts.pro_bar( api=api, ts_code= stockCode, adj=adj, start_date = startDate, end_date = endDate )
         
         return pd.DataFrame( data )
