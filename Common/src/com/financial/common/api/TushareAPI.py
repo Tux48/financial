@@ -32,7 +32,7 @@ class TushareAPI:
     __instance_lock = threading.Lock()
     
     ## 股票接口 token
-    __TS_TOKEN = "ba9b75382e295fb2074d4c8530a3fafeff5d88f33816041b0122a02c"
+    __TS_TOKEN = "ba9b75382e295fb2074d4c8530a3fafeff5d88f3381604102c"
 
     ## 股票接口
     __tsPro = None
